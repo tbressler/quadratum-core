@@ -134,7 +134,26 @@ public class GameBoard {
         if (!getActivePlayer().equals(player))
             throw new AssertionError("The player is not active!");
 
+        // Check if field is empty
+        if (!isFieldEmpty(index))
+            throw new AssertionError("The given field index is not empty!");
 
+        // Place piece and set next player:
+        if (player.equals(player1)) {
+            board[index] = 1;
+            setActivePlayerTo(player2);
+        } else if (player == player2) {
+            board[index] = 2;
+            setActivePlayerTo(player1);
+        }
+
+        // TODO Notify listeners.
+    }
+
+
+    public boolean isFieldEmpty(int index) {
+        checkFieldIndex(index);
+        return (board[index] == 0);
     }
 
     /* Checks if index is in range. */

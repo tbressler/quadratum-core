@@ -131,6 +131,8 @@ public class TestGameBoard {
 
         // TODO Check if game board is cleared after starting the game.
 
+        for(int i = 0; i < 64; i++)
+            assertEquals(true, gameBoard.isFieldEmpty(i));
     }
 
 
@@ -206,6 +208,44 @@ public class TestGameBoard {
     public void placePiece_withGreaterThan63_throwsException() {
         gameBoard.startGame(player1);
         gameBoard.placePiece(64, player1);
+    }
+
+
+    /**
+     * Checks if all fields are empty after game board was initialized.
+     */
+    @Test
+    public void isFieldEmpty_returnsTrue_afterNewForAllFields() {
+        for(int i = 0; i < 64; i++)
+            assertEquals(true, gameBoard.isFieldEmpty(i));
+    }
+
+    /**
+     * Checks if isFieldEmpty() returns false if a piece was placed on that field before.
+     */
+    @Test
+    public void isFieldEmpty_returnsFalse_afterPlacePieceOnIndex13() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(13, player1);
+        assertEquals(false, gameBoard.isFieldEmpty(13));
+    }
+
+    /**
+     * Checks if an exception is thrown if the given field index is lower than 0. Only an index
+     * between 0 and 63 is allowed.
+     */
+    @Test(expected = AssertionError.class)
+    public void isFieldEmpty_withLowerThan0_throwsException() {
+        gameBoard.isFieldEmpty(-1);
+    }
+
+    /**
+     * Checks if an exception is thrown if the given field index is greater than 63. Only an index
+     * between 0 and 63 is allowed.
+     */
+    @Test(expected = AssertionError.class)
+    public void isFieldEmpty_withGreaterThan63_throwsException() {
+        gameBoard.isFieldEmpty(64);
     }
 
 
