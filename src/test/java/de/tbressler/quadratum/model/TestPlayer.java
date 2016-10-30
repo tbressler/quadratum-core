@@ -11,12 +11,12 @@ import org.junit.Before;
 public class TestPlayer {
 
     // Class under test:
-    private Player classUnderTest;
+    private Player player;
 
 
     @Before
     public void setUp() {
-        classUnderTest = new Player();
+        player = new Player();
     }
 
 
