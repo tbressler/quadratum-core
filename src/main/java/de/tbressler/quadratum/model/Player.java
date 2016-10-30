@@ -1,7 +1,5 @@
 package de.tbressler.quadratum.model;
 
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -33,4 +31,5 @@ public class Player {
     public String getName() {
         return name;
     }
+
 }

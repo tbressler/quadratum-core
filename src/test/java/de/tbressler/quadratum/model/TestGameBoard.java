@@ -50,14 +50,41 @@ public class TestGameBoard {
     }
 
 
+    /**
+     * getPlayer1() must always return player one.
+     */
     @Test
     public void getPlayer1_returnsPlayerOne() {
         assertEquals(player1, gameBoard.getPlayer1());
     }
 
 
+    /**
+     * getPlayer2() must always return player two.
+     */
     @Test
     public void getPlayer2_returnsPlayerTwo() {
         assertEquals(player2, gameBoard.getPlayer2());
     }
+
+
+    /**
+     * Checks if the active player is null after the initialization of the game board, because
+     * the game has not started yet.
+     */
+    @Test
+    public void getActivePlayer_returnsNull_afterNew() {
+        assertEquals(null, gameBoard.getActivePlayer());
+    }
+
+
+    /**
+     * Checks if isStarted() returns false after the initialization of the game board, because
+     * the game has not started yet.
+     */
+    @Test
+    public void isStarted_returnsFalse_afterNew() {
+        assertEquals(false, gameBoard.isStarted());
+    }
+
 }
