@@ -1,5 +1,9 @@
 package de.tbressler.quadratum.model;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 /**
  * A player.
  *
@@ -7,4 +11,26 @@ package de.tbressler.quadratum.model;
  * @version 1.0
  */
 public class Player {
+
+    /* The name of the player. */
+    private final String name;
+
+
+    /**
+     * Creates a player.
+     *
+     * @param name The name of the player, must not be null.
+     */
+    public Player(String name) {
+        this.name = requireNonNull(name);
+    }
+
+    /**
+     * Returns the name of the player.
+     *
+     * @return The name of the player, never null.
+     */
+    public String getName() {
+        return name;
+    }
 }

@@ -1,6 +1,10 @@
 package de.tbressler.quadratum.model;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for class Player.
@@ -16,8 +20,19 @@ public class TestPlayer {
 
     @Before
     public void setUp() {
-        player = new Player();
+        player = new Player("name");
     }
 
+
+    @Test(expected = NullPointerException.class)
+    public void new_withNullName_throwsException() {
+        new Player(null);
+    }
+
+
+    @Test
+    public void getName_returnsName() {
+        assertEquals("name", player.getName());
+    }
 
 }
