@@ -122,9 +122,10 @@ public class GameBoard {
 
 
     /**
+     * Place a piece on the game board.
      *
-     * @param index
-     * @param player
+     * @param index The field index, between 0 and 63.
+     * @param player The player, must not be null.
      */
     public void placePiece(int index, Player player) {
         if (!isStarted())
@@ -132,7 +133,7 @@ public class GameBoard {
         checkFieldIndex(index);
         checkPlayer(player);
         if (!getActivePlayer().equals(player))
-            throw new AssertionError("The player is not active!");
+            throw new AssertionError("The player is not active currently!");
 
         // Check if field is empty
         if (!isFieldEmpty(index))
@@ -150,7 +151,12 @@ public class GameBoard {
         // TODO Notify listeners.
     }
 
-
+    /**
+     * Returns true if the field is empty. Otherwise this method returns false.
+     *
+     * @param index The field index, between 0 and 63.
+     * @return true if the field is empty or false.
+     */
     public boolean isFieldEmpty(int index) {
         checkFieldIndex(index);
         return (board[index] == 0);
