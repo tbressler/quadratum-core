@@ -1,4 +1,4 @@
-# quadratum-core
+# Quadratum Core Library
 
 The new library for the game "Quadratum", which replaces the square library.
 
