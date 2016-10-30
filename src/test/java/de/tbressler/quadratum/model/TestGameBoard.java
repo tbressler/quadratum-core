@@ -2,7 +2,6 @@ package de.tbressler.quadratum.model;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.matchers.Null;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -35,16 +34,25 @@ public class TestGameBoard {
     }
 
 
+    /**
+     * Checks if an exception is thrown if player one is null.
+     */
     @Test(expected = NullPointerException.class)
     public void new_withNullPlayerOne_throwsException() {
         new GameBoard(null, player2);
     }
 
+    /**
+     * Checks if an exception is thrown if player two is null.
+     */
     @Test(expected = NullPointerException.class)
     public void new_withNullPlayerTwo_throwsException() {
         new GameBoard(player1, null);
     }
 
+    /**
+     * Checks if an exception is thrown if player one and two are equal.
+     */
     @Test(expected = AssertionError.class)
     public void new_withEqualPlayers_throwsException() {
         new GameBoard(player1, player1);
@@ -145,12 +153,73 @@ public class TestGameBoard {
     }
 
 
+    /**
+     * Checks if an exception is thrown if game is not started yet.
+     */
+    @Test(expected = AssertionError.class)
+    public void placePiece_ifGameIsNotStarted_throwsException() {
+        gameBoard.placePiece(0, player1);
+    }
+
+    /**
+     * Checks if an exception is thrown if the player is null.
+     */
+    @Test(expected = NullPointerException.class)
+    public void placePiece_withNullPlayer_throwsException() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(0, null);
+    }
+
+    /**
+     * Checks if an exception is thrown if the given player is not known by the game board.
+     */
+    @Test(expected = AssertionError.class)
+    public void placePiece_withUnknownPlayer_throwsException() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(0, mock(Player.class, "unknown-player"));
+    }
+
+    /**
+     * Checks if an exception is thrown if the given player is not the active player.
+     */
+    @Test(expected = AssertionError.class)
+    public void placePiece_withInactivePlayer_throwsException() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(0, player2);
+    }
+
+    /**
+     * Checks if an exception is thrown if the given field index is lower than 0. Only an index
+     * between 0 and 63 is allowed.
+     */
+    @Test(expected = AssertionError.class)
+    public void placePiece_withLowerThan0_throwsException() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(-1, player1);
+    }
+
+    /**
+     * Checks if an exception is thrown if the given field index is greater than 63. Only an index
+     * between 0 and 63 is allowed.
+     */
+    @Test(expected = AssertionError.class)
+    public void placePiece_withGreaterThan63_throwsException() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(64, player1);
+    }
+
+
+    /**
+     * Checks if an exception is thrown the given listener is null.
+     */
     @Test(expected = NullPointerException.class)
     public void addGameBoardListener_withNull_throwsException() {
         gameBoard.addGameBoardListener(null);
     }
 
-
+    /**
+     * Checks if an exception is thrown the given listener is null.
+     */
     @Test(expected = NullPointerException.class)
     public void removeGameBoardListener_withNull_throwsException() {
         gameBoard.removeGameBoardListener(null);

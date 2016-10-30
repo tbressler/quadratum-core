@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.google.common.collect.Range.closed;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -46,6 +47,7 @@ public class GameBoard {
         this.player2 = requireNonNull(player2);
     }
 
+
     /**
      * Returns the first player.
      *
@@ -54,6 +56,7 @@ public class GameBoard {
     public Player getPlayer1() {
         return player1;
     }
+
 
     /**
      * Returns the second player.
@@ -64,6 +67,7 @@ public class GameBoard {
         return player2;
     }
 
+
     /**
      * Returns the active player or null if the game has not started yet.
      *
@@ -73,13 +77,14 @@ public class GameBoard {
         return activePlayer;
     }
 
+
     /**
      * Starts the game. Clears the game board if a game was started before.
      *
      * @param activePlayer The active player, who can do the first turn. Must not be null.
      */
     public void startGame(Player activePlayer) {
-        checkActivePlayer(activePlayer);
+        checkPlayer(activePlayer);
 
         clearGameBoard();
         setActivePlayerTo(activePlayer);
@@ -88,10 +93,10 @@ public class GameBoard {
     }
 
     /* Checks if the active player is valid. */
-    private void checkActivePlayer(Player activePlayer) {
+    private void checkPlayer(Player activePlayer) {
         if (!(requireNonNull(activePlayer).equals(player1) ||
               requireNonNull(activePlayer).equals(player2)))
-            throw new AssertionError("Only player one or two can be set as active player!");
+            throw new AssertionError("Player is unknown at the game board!");
     }
 
     /** Clears the game board. */
@@ -105,6 +110,7 @@ public class GameBoard {
         this.activePlayer = player;
     }
 
+
     /**
      * Returns true if the game was started, otherwise the method returns false.
      *
@@ -113,6 +119,30 @@ public class GameBoard {
     public boolean isStarted() {
         return isStarted;
     }
+
+
+    /**
+     *
+     * @param index
+     * @param player
+     */
+    public void placePiece(int index, Player player) {
+        if (!isStarted())
+            throw new AssertionError("The game is not started yet!");
+        checkFieldIndex(index);
+        checkPlayer(player);
+        if (!getActivePlayer().equals(player))
+            throw new AssertionError("The player is not active!");
+
+
+    }
+
+    /* Checks if index is in range. */
+    private void checkFieldIndex(int index) {
+        if (!closed(0, 63).contains(index))
+            throw new AssertionError("Index must be between 0 and 63!");
+    }
+
 
     /**
      * Adds a listener to the game board.
