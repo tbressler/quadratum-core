@@ -23,4 +23,11 @@ public interface IGameBoardListener {
      */
     void onPiecePlaced(int index, Player player);
 
+    /**
+     * This method is called, if the game was (re)started.
+     *
+     * @param activePlayer The active player.
+     */
+    void onGameStarted(Player activePlayer);
+
 }

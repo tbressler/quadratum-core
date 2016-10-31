@@ -84,16 +84,18 @@ public class GameBoard {
      * @param activePlayer The active player, who can do the first turn. Must not be null.
      */
     public void startGame(Player activePlayer) {
-        checkPlayer(activePlayer);
+        checkStartGamePrecondition(activePlayer);
 
         clearGameBoard();
-        setActivePlayerTo(activePlayer);
 
         isStarted = true;
+
+        setActivePlayerTo(activePlayer);
+        fireOnGameStarted(activePlayer);
     }
 
     /* Checks if the active player is valid. */
-    private void checkPlayer(Player activePlayer) {
+    private void checkStartGamePrecondition(Player activePlayer) {
         if (!(requireNonNull(activePlayer).equals(player1) ||
               requireNonNull(activePlayer).equals(player2)))
             throw new AssertionError("Player is unknown at the game board!");
@@ -103,6 +105,12 @@ public class GameBoard {
     private void clearGameBoard() {
         for (int i = 0; i < 64; i++)
             board[i] = 0;
+    }
+
+    /* Notifies the game board listeners that the game has started. */
+    private void fireOnGameStarted(Player activePlayer) {
+        for (IGameBoardListener listener : listeners)
+            listener.onGameStarted(activePlayer);
     }
 
 
@@ -155,7 +163,7 @@ public class GameBoard {
         if (!isStarted())
             throw new AssertionError("The game is not started yet!");
         checkFieldIndex(index);
-        checkPlayer(player);
+        checkStartGamePrecondition(player);
         if (!getActivePlayer().equals(player))
             throw new AssertionError("The player is not active currently!");
 

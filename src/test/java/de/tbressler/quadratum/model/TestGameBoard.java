@@ -146,9 +146,18 @@ public class TestGameBoard {
      * Checks if startGame() notifies the game board listeners that the active player has changed.
      */
     @Test
-    public void startGame_notifiesListeners() {
+    public void startGame_notifiesListeners_onActivePlayerChanged() {
         gameBoard.startGame(player1);
         verify(listener, times(1)).onActivePlayerChanged(player1);
+    }
+
+    /**
+     * Checks if startGame() notifies the game board listeners that the game has started.
+     */
+    @Test
+    public void startGame_notifiesListeners_onGameStarted() {
+        gameBoard.startGame(player1);
+        verify(listener, times(1)).onGameStarted(player1);
     }
 
     /**
