@@ -105,9 +105,17 @@ public class GameBoard {
             board[i] = 0;
     }
 
+
     /* Changes the active player to the given player. */
     private void setActivePlayerTo(Player player) {
         this.activePlayer = player;
+        fireOnActivePlayerChanged(player);
+    }
+
+    /* Notifies all listeners that the active player has changed. */
+    private void fireOnActivePlayerChanged(Player player) {
+        for (IGameBoardListener listener: listeners)
+            listener.onActivePlayerChanged(player);
     }
 
 
@@ -128,16 +136,7 @@ public class GameBoard {
      * @param player The player, must not be null.
      */
     public void placePiece(int index, Player player) {
-        if (!isStarted())
-            throw new AssertionError("The game is not started yet!");
-        checkFieldIndex(index);
-        checkPlayer(player);
-        if (!getActivePlayer().equals(player))
-            throw new AssertionError("The player is not active currently!");
-
-        // Check if field is empty
-        if (!isFieldEmpty(index))
-            throw new AssertionError("The given field index is not empty!");
+        checkPlacePiecePrecondition(index, player);
 
         // Place piece and set next player:
         if (player.equals(player1)) {
@@ -148,7 +147,27 @@ public class GameBoard {
             setActivePlayerTo(player1);
         }
 
-        // TODO Notify listeners.
+        fireOnPiecePlaced(index, player);
+    }
+
+    /* Checks the preconditions for placing a piece on the game board. */
+    private void checkPlacePiecePrecondition(int index, Player player) {
+        if (!isStarted())
+            throw new AssertionError("The game is not started yet!");
+        checkFieldIndex(index);
+        checkPlayer(player);
+        if (!getActivePlayer().equals(player))
+            throw new AssertionError("The player is not active currently!");
+
+        // Check if field is empty
+        if (!isFieldEmpty(index))
+            throw new AssertionError("The given field index is not empty!");
+    }
+
+    /* Notifies all listeners that a piece was placed on the game board. */
+    private void fireOnPiecePlaced(int index, Player player) {
+        for(IGameBoardListener listener : listeners)
+            listener.onPiecePlaced(index, player);
     }
 
     /**

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for class GameBoard.
@@ -31,6 +31,7 @@ public class TestGameBoard {
         listener = mock(IGameBoardListener.class, "listener");
 
         gameBoard = new GameBoard(player1, player2);
+        gameBoard.addGameBoardListener(listener);
     }
 
 
@@ -135,6 +136,14 @@ public class TestGameBoard {
             assertEquals(true, gameBoard.isFieldEmpty(i));
     }
 
+    /**
+     * Checks if startGame() notifies the game board listeners that the active player has changed.
+     */
+    @Test
+    public void startGame_notifiesListeners() {
+        gameBoard.startGame(player1);
+        verify(listener, times(1)).onActivePlayerChanged(player1);
+    }
 
     /**
      * Checks if isStarted() returns false after the initialization of the game board, because
@@ -208,6 +217,27 @@ public class TestGameBoard {
     public void placePiece_withGreaterThan63_throwsException() {
         gameBoard.startGame(player1);
         gameBoard.placePiece(64, player1);
+    }
+
+    /**
+     * Checks if placePiece() notifies all game board listeners about the placed piece.
+     */
+    @Test
+    public void placePiece_notifiesListeners_onPiecePlaced() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(10, player1);
+        verify(listener, times(1)).onPiecePlaced(10, player1);
+    }
+
+    /**
+     * Checks if placePiece() notifies all game board listeners about the change of the active
+     * player.
+     */
+    @Test
+    public void placePiece_notifiesListeners_onActivePlayerChanged() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(10, player1);
+        verify(listener, times(1)).onActivePlayerChanged(player2);
     }
 
 

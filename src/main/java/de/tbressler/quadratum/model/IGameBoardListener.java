@@ -7,4 +7,9 @@ package de.tbressler.quadratum.model;
  * @version 1.0
  */
 public interface IGameBoardListener {
+
+    void onActivePlayerChanged(Player newPlayer);
+
+    void onPiecePlaced(int index, Player player);
+
 }
