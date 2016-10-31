@@ -19,13 +19,14 @@ public class SquareUtils {
     /* Private constructor. */
     private SquareUtils() {}
 
+
     /**
      * Checks if the given indexes are forming a valid square.
      *
-     * @param index1 The first index, between 0..63
-     * @param index2 The second index, between 0..63
-     * @param index3 The third index, between 0..63
-     * @param index4 The fourth index, between 0..63
+     * @param index1 The first index, between 0..63.
+     * @param index2 The second index, between 0..63.
+     * @param index3 The third index, between 0..63.
+     * @param index4 The fourth index, between 0..63.
      * @return True if the pieces are forming a valid square or false.
      */
     public static boolean isSquare(int index1, int index2, int index3, int index4) {
@@ -91,8 +92,8 @@ public class SquareUtils {
     /**
      * Returns the score for the given square.
      *
-     * @param pieces The array with the 4 indexes of the edges of the square
-     * @return The score for the square, between 1..49
+     * @param pieces The array with the 4 indexes of the edges of the square.
+     * @return The score for the square, between 1..49.
      */
     public static int score(int[] pieces) {
         return score(pieces[0], pieces[1], pieces[2], pieces[3]);

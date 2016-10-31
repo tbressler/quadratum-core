@@ -8,8 +8,10 @@ package de.tbressler.quadratum.utils;
  */
 public class GameBoardUtils {
 
+
     /* Private constructor. */
     private GameBoardUtils() {}
+
 
     /**
      * Converts the given x-y coordinates to the corresponding index.
