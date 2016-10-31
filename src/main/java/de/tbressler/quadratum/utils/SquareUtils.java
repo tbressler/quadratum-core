@@ -1,9 +1,7 @@
 package de.tbressler.quadratum.utils;
 
 import static de.tbressler.quadratum.utils.GameBoardUtils.*;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
 import static java.util.Arrays.sort;
 
 /**

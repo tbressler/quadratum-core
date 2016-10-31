@@ -1,7 +1,6 @@
 package de.tbressler.quadratum.model;
 
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Tests for the class Square.
@@ -20,8 +19,8 @@ public class TestSquare {
         square = new Square();
     }
 
-    @Test(expected = AssertionError.class)
-    public void new_withWrongFieldIndex1_throwsException() {
-        // TODO Test constructor.
-    }
+    // @Test(expected = AssertionError.class)
+    // public void new_withWrongFieldIndex1_throwsException() {
+    //    // TODO Test constructor.
+    // }
 }
