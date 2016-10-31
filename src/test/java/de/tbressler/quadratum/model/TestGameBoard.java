@@ -129,9 +129,15 @@ public class TestGameBoard {
      */
     @Test
     public void startGame_clearsGameBoard() {
+        // Start the game board and place pieces:
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(1, player1);
+        gameBoard.placePiece(5, player2);
 
-        // TODO Check if game board is cleared after starting the game.
+        // (Re)start the game:
+        gameBoard.startGame(player1);
 
+        // Check if the game board is empty:
         for(int i = 0; i < 64; i++)
             assertEquals(true, gameBoard.isFieldEmpty(i));
     }
