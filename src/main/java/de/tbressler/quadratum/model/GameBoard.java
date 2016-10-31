@@ -197,6 +197,24 @@ public class GameBoard {
 
 
     /**
+     * Returns the player who placed the piece on the game board or null if no piece was placed
+     * on the given field.
+     *
+     * @param index The field index, between 0 and 63.
+     * @return The player who placed the piece or null if no piece was placed.
+     */
+    public Player getPiece(int index) {
+        checkFieldIndex(index);
+        int piece = board[index];
+        if (piece == 1)
+            return player1;
+        else if (piece == 2)
+            return player2;
+        return null;
+    }
+
+
+    /**
      * Adds a listener to the game board.
      *
      * @param listener the listener, must not be null.

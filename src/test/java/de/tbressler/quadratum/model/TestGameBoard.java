@@ -295,6 +295,56 @@ public class TestGameBoard {
 
 
     /**
+     * Checks if an exception is thrown if the given field index is lower than 0. Only an index
+     * between 0 and 63 is allowed.
+     */
+    @Test(expected = AssertionError.class)
+    public void getPiece_withLowerThan0_throwsException() {
+        gameBoard.getPiece(-1);
+    }
+
+    /**
+     * Checks if an exception is thrown if the given field index is greater than 63. Only an index
+     * between 0 and 63 is allowed.
+     */
+    @Test(expected = AssertionError.class)
+    public void getPiece_withGreaterThan63_throwsException() {
+        gameBoard.getPiece(64);
+    }
+
+    /**
+     * Checks if getPiece() returns player one if this player placed the piece before.
+     */
+    @Test
+    public void getPiece_returnsPlayer1_ifPlayer1PlacedPieceBefore() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(40, player1);
+        assertEquals(player1, gameBoard.getPiece(40));
+    }
+
+    /**
+     * Checks if getPiece() returns player two if this player placed the piece before.
+     */
+    @Test
+    public void getPiece_returnsPlayer2_ifPlayer2PlacedPieceBefore() {
+        gameBoard.startGame(player1);
+        gameBoard.placePiece(40, player1);
+        gameBoard.placePiece(20, player2);
+
+        assertEquals(player2, gameBoard.getPiece(20));
+    }
+
+    /**
+     * Checks if getPiece() returns null if the field is empty.
+     */
+    @Test
+    public void getPiece_returnsNull_ifFieldIsEmpty() {
+        gameBoard.startGame(player1);
+        assertEquals(null, gameBoard.getPiece(30));
+    }
+
+
+    /**
      * Checks if an exception is thrown the given listener is null.
      */
     @Test(expected = NullPointerException.class)
