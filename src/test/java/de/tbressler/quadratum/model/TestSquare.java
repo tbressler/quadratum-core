@@ -1,6 +1,13 @@
 package de.tbressler.quadratum.model;
 
 import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for the class Square.
@@ -13,14 +20,96 @@ public class TestSquare {
     // Class under test:
     private Square square;
 
+    // Mocks:
+    private Player player;
 
     @Before
     public void setUp() {
-        square = new Square();
+        player = mock(Player.class, "player");
     }
 
-    // @Test(expected = AssertionError.class)
-    // public void new_withWrongFieldIndex1_throwsException() {
-    //    // TODO Test constructor.
-    // }
+    @Test(expected = NullPointerException.class)
+    public void new_withNullPieces_throwsException() {
+        new Square(null, player);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void new_withEmptyPieces_throwsException() {
+        new Square(new int[0], player);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void new_withLessThan4Pieces_throwsException() {
+        new Square(new int[3], player);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void new_withMoreThan4Pieces_throwsException() {
+        new Square(new int[5], player);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void new_withNullPlayer_throwsException() {
+        new Square(null, player);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void new_withInvalidSquare_throwsException() {
+        new Square(new int[] {0, 1, 2, 3}, player);
+    }
+
+    @Test
+    public void getSortedPieces_withSortedPieces_returnsSortedPieces() {
+        Square square = new Square(new int[]{0, 1, 8, 9}, player);
+        assertTrue(Arrays.equals(square.getSortedPieces(), new int[]{0, 1, 8, 9}));
+    }
+
+    @Test
+    public void getSortedPieces_withUnsortedPieces_returnsSortedPieces() {
+        Square square = new Square(new int[]{9, 0, 8, 1}, player);
+        assertTrue(Arrays.equals(square.getSortedPieces(), new int[]{0, 1, 8, 9}));
+    }
+
+    @Test
+    public void getPlayer_returnsPlayer() {
+        Square square = new Square(new int[]{9, 0, 8, 1}, player);
+        assertEquals(player, square.getPlayer());
+    }
+
+    @Test
+    public void getScore_withObliqueSquare_returns9() {
+        Square square = new Square(new int[]{9, 19, 24, 34}, player);
+        assertEquals(9, square.getScore());
+    }
+
+    @Test
+    public void getScore_withNormalSquare_returns9() {
+        Square square = new Square(new int[]{36, 39, 60, 63}, player);
+        assertEquals(9, square.getScore());
+    }
+
+    @Test
+    public void getScore_withSmallestSquare_returns1() {
+        Square square = new Square(new int[]{0, 1, 8, 9}, player);
+        assertEquals(1, square.getScore());
+    }
+
+    @Test
+    public void getScore_withBiggestSquare_returns49() {
+        Square square = new Square(new int[]{0, 7, 56, 63}, player);
+        assertEquals(49, square.getScore());
+    }
+
+    @Test
+    public void getScore_withBiggestObliqueSquare_returns49() {
+        Square square = new Square(new int[]{1, 15, 48, 62}, player);
+        assertEquals(49, square.getScore());
+    }
+
+    @Test
+    public void getScore_withSmallestObliqueSquare_returns4() {
+        Square square = new Square(new int[]{1, 8, 10, 17}, player);
+        assertEquals(4, square.getScore());
+    }
+
 }
