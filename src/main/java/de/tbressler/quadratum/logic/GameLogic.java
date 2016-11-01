@@ -1,6 +1,7 @@
 package de.tbressler.quadratum.logic;
 
 import de.tbressler.quadratum.model.GameBoard;
+import de.tbressler.quadratum.model.IGameBoardListener;
 import de.tbressler.quadratum.model.Player;
 
 import static java.util.Objects.requireNonNull;
@@ -39,7 +40,28 @@ public class GameLogic {
         if (player1.equals(player2))
             throw new AssertionError("playerLogic1 and playerLogic2 uses the same player!");
 
-        this.gameBoard = new GameBoard(player1, player2);
+        initGameBoard(player1, player2);
+    }
+
+    /* Creates the game board and adds listener. */
+    private void initGameBoard(Player player1, Player player2) {
+        gameBoard = new GameBoard(player1, player2);
+        gameBoard.addGameBoardListener(new IGameBoardListener() {
+            @Override
+            public void onActivePlayerChanged(Player newPlayer) {
+                // TODO Not implemented yet!
+            }
+
+            @Override
+            public void onPiecePlaced(int index, Player player) {
+                // TODO Not implemented yet!
+            }
+
+            @Override
+            public void onGameStarted(Player activePlayer) {
+                // TODO Not implemented yet!
+            }
+        });
     }
 
 
