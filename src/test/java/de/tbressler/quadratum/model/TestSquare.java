@@ -152,4 +152,40 @@ public class TestSquare {
         assertTrue(square1.equals(square2));
     }
 
+
+    @Test
+    public void hashCode_withEqualSquares_returnsEqualHashCode() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 8, 10, 17}, player);
+        assertEquals(square1.hashCode(), square2.hashCode());
+    }
+
+    @Test
+    public void hash_withUnequalPieces_returnsUnequalHashCode() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 15, 48, 62}, player);
+        assertNotSame(square1.hashCode(), square2.hashCode());
+    }
+
+    @Test
+    public void hashCode_withUnequalPiecesAndUnequalPlayer_returnsUnequalHashCode() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 15, 48, 62}, mock(Player.class, "player2"));
+        assertNotSame(square1.hashCode(), square2.hashCode());
+    }
+
+    @Test
+    public void hashCode_withUnequalPlayer_returnsUnequalHashCode() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 8, 10, 17}, mock(Player.class, "player2"));
+        assertNotSame(square1.hashCode(), square2.hashCode());
+    }
+
+    @Test
+    public void hashCode_withEqualSquaresButUnsorted_returnsEqualHashCode() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{8, 1, 17, 10}, player);
+        assertEquals(square1.hashCode(), square2.hashCode());
+    }
+
 }
