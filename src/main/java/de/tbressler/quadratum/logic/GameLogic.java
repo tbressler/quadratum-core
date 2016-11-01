@@ -33,8 +33,8 @@ public class GameLogic {
         this.playerLogic1 = requireNonNull(playerLogic1);
         this.playerLogic2 = requireNonNull(playerLogic2);
 
-        Player player1 = playerLogic1.getPlayer();
-        Player player2 = playerLogic2.getPlayer();
+        Player player1 = requireNonNull(playerLogic1.getPlayer());
+        Player player2 = requireNonNull(playerLogic2.getPlayer());
 
         if (player1.equals(player2))
             throw new AssertionError("playerLogic1 and playerLogic2 uses the same player!");

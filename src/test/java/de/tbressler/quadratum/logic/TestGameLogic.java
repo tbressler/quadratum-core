@@ -54,6 +54,20 @@ public class TestGameLogic {
         new GameLogic(playerLogic1, playerLogic2);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void new_withPlayerLogic1HasNullPlayer_throwsException() {
+        when(playerLogic1.getPlayer()).thenReturn(null);
+        when(playerLogic2.getPlayer()).thenReturn(player2);
+        new GameLogic(playerLogic1, playerLogic2);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void new_withPlayerLogic2HasNullPlayer_throwsException() {
+        when(playerLogic1.getPlayer()).thenReturn(player1);
+        when(playerLogic2.getPlayer()).thenReturn(null);
+        new GameLogic(playerLogic1, playerLogic2);
+    }
+
 
     @Test
     public void getGameBoard_returnsGameBoardWithPlayer1and2() {
