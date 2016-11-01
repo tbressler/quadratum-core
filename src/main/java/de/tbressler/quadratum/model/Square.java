@@ -48,7 +48,7 @@ public class Square {
     /**
      * Returns the field indexes of the pieces as a sorted array.
      *
-     * @return The pieces as sorted array.
+     * @return The pieces as sorted array, never null.
      */
     public int[] getSortedPieces() {
         return pieces;
@@ -66,7 +66,7 @@ public class Square {
     /**
      * Returns the player who scored the square.
      *
-     * @return The player.
+     * @return The player, never null.
      */
     public Player getPlayer() {
         return player;

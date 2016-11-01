@@ -22,10 +22,12 @@ public class TestSquare {
     // Mocks:
     private Player player;
 
+
     @Before
     public void setUp() {
         player = mock(Player.class, "player");
     }
+
 
     @Test(expected = NullPointerException.class)
     public void new_withNullPieces_throwsException() {
@@ -57,6 +59,7 @@ public class TestSquare {
         new Square(new int[]{0, 1, 2, 3}, player);
     }
 
+
     @Test
     public void getSortedPieces_withSortedPieces_returnsSortedPieces() {
         Square square = new Square(new int[]{0, 1, 8, 9}, player);
@@ -69,11 +72,13 @@ public class TestSquare {
         assertTrue(Arrays.equals(square.getSortedPieces(), new int[]{0, 1, 8, 9}));
     }
 
+
     @Test
     public void getPlayer_returnsPlayer() {
         Square square = new Square(new int[]{9, 0, 8, 1}, player);
         assertEquals(player, square.getPlayer());
     }
+
 
     @Test
     public void getScore_withObliqueSquare_returns9() {
@@ -111,6 +116,7 @@ public class TestSquare {
         assertEquals(4, square.getScore());
     }
 
+
     @Test
     public void equals_withEqualSquares_returnsTrue() {
         Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
@@ -118,11 +124,17 @@ public class TestSquare {
         assertTrue(square1.equals(square2));
     }
 
-
     @Test
     public void equals_withUnequalPieces_returnsFalse() {
         Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
         Square square2 = new Square(new int[]{1, 15, 48, 62}, player);
+        assertFalse(square1.equals(square2));
+    }
+
+    @Test
+    public void equals_withUnequalPiecesAndUnequalPlayer_returnsFalse() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 15, 48, 62}, mock(Player.class, "player2"));
         assertFalse(square1.equals(square2));
     }
 
