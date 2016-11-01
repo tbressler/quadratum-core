@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -50,12 +49,12 @@ public class TestSquare {
 
     @Test(expected = NullPointerException.class)
     public void new_withNullPlayer_throwsException() {
-        new Square(null, player);
+        new Square(new int[]{0, 1, 8, 9}, null);
     }
 
     @Test(expected = AssertionError.class)
     public void new_withInvalidSquare_throwsException() {
-        new Square(new int[] {0, 1, 2, 3}, player);
+        new Square(new int[]{0, 1, 2, 3}, player);
     }
 
     @Test
@@ -110,6 +109,35 @@ public class TestSquare {
     public void getScore_withSmallestObliqueSquare_returns4() {
         Square square = new Square(new int[]{1, 8, 10, 17}, player);
         assertEquals(4, square.getScore());
+    }
+
+    @Test
+    public void equals_withEqualSquares_returnsTrue() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 8, 10, 17}, player);
+        assertTrue(square1.equals(square2));
+    }
+
+
+    @Test
+    public void equals_withUnequalPieces_returnsFalse() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 15, 48, 62}, player);
+        assertFalse(square1.equals(square2));
+    }
+
+    @Test
+    public void equals_withUnequalPlayer_returnsFalse() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{1, 8, 10, 17}, mock(Player.class, "player2"));
+        assertFalse(square1.equals(square2));
+    }
+
+    @Test
+    public void equals_withEqualSquaresButUnsorted_returnsTrue() {
+        Square square1 = new Square(new int[]{1, 8, 10, 17}, player);
+        Square square2 = new Square(new int[]{8, 1, 17, 10}, player);
+        assertTrue(square1.equals(square2));
     }
 
 }

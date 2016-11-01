@@ -2,6 +2,8 @@ package de.tbressler.quadratum.model;
 
 import de.tbressler.quadratum.utils.SquareUtils;
 
+import java.util.Arrays;
+
 import static de.tbressler.quadratum.utils.SquareUtils.score;
 import static java.util.Arrays.sort;
 import static java.util.Objects.requireNonNull;
@@ -23,6 +25,7 @@ public class Square {
     /* The player that scored the square. */
     private final Player player;
 
+
     /**
      * Creates a square.
      *
@@ -42,15 +45,50 @@ public class Square {
         this.player = requireNonNull(player);
     }
 
+    /**
+     * Returns the field indexes of the pieces as a sorted array.
+     *
+     * @return The pieces as sorted array.
+     */
     public int[] getSortedPieces() {
         return pieces;
     }
 
+    /**
+     * Returns the score of the square.
+     *
+     * @return The score.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Returns the player who scored the square.
+     *
+     * @return The player.
+     */
     public Player getPlayer() {
         return player;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Square square = (Square) o;
+
+        if (!player.equals(square.player)) return false;
+
+        return Arrays.equals(pieces, square.pieces);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(pieces);
+        result = 31 * result + player.hashCode();
+        return result;
+    }
+
 }
