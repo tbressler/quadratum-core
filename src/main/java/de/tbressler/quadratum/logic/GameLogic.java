@@ -5,7 +5,9 @@ import de.tbressler.quadratum.model.IGameBoardListener;
 import de.tbressler.quadratum.model.Player;
 import de.tbressler.quadratum.model.Square;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
@@ -29,6 +31,9 @@ public class GameLogic {
 
     /* The squares. */
     private Set<Square> squares = new HashSet<>();
+
+    /* The listeners. */
+    private List<IGameLogicListener> listeners = new ArrayList<>();
 
 
     /**
@@ -112,6 +117,25 @@ public class GameLogic {
      */
     public Set<Square> getSquares() {
         return squares;
+    }
+
+
+    /**
+     * Adds a listener to the game logic.
+     *
+     * @param listener the listener, must not be null.
+     */
+    public void addGameLogicListener(IGameLogicListener listener) {
+        listeners.add(requireNonNull(listener));
+    }
+
+    /**
+     * Removes a listener from the game logic.
+     *
+     * @param listener the listener, must not be null.
+     */
+    public void removeGameLogicListener(IGameLogicListener listener) {
+        listeners.remove(requireNonNull(listener));
     }
 
 }

@@ -126,4 +126,15 @@ public class TestGameLogic {
         assertEquals(0, gameLogic.getSquares().size());
     }
 
+
+    @Test(expected = NullPointerException.class)
+    public void addGameLogicListener_withNull_throwsException() {
+        gameLogic.addGameLogicListener(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void removeGameLogicListener_withNull_throwsException() {
+        gameLogic.removeGameLogicListener(null);
+    }
+
 }
