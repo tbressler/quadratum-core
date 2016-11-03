@@ -1,7 +1,6 @@
 package de.tbressler.quadratum.logic;
 
 import de.tbressler.quadratum.model.GameBoard;
-import de.tbressler.quadratum.model.IGameBoardListener;
 import de.tbressler.quadratum.model.Player;
 import de.tbressler.quadratum.model.Square;
 
@@ -64,8 +63,6 @@ public class GameLogic {
         this.player2 = requireNonNull(playerLogic2.getPlayer());
 
         checkPlayers(gameBoard, player1, player2);
-
-        initGameBoard();
     }
 
     /* Checks if players of player logic and game board are corrent. */
@@ -78,16 +75,6 @@ public class GameLogic {
         if (!player2.equals(gameBoard.getPlayer2()))
             throw new AssertionError("Player 2 of game board is different to player " +
                     "of playerLogic2!");
-    }
-
-    /* Adds listeners to game board. */
-    private void initGameBoard() {
-        gameBoard.addGameBoardListener(new IGameBoardListener() {
-            @Override
-            public void onPiecePlaced(int index, Player player) {
-                // TODO Not implemented yet!
-            }
-        });
     }
 
 

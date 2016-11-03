@@ -67,6 +67,13 @@ public class GameBoard {
     public void clear() {
         for (int i = 0; i < 64; i++)
             board[i] = 0;
+        fireOnGameBoardCleared();
+    }
+
+    /* Notifies listeners that the game board was cleared. */
+    private void fireOnGameBoardCleared() {
+        for(IGameBoardListener listener : listeners)
+            listener.onGameBoardCleared();
     }
 
 

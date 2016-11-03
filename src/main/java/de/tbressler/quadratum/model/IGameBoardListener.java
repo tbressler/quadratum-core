@@ -16,4 +16,9 @@ public interface IGameBoardListener {
      */
     void onPiecePlaced(int index, Player player);
 
+    /**
+     * This method is called, if the game board was cleared.
+     */
+    void onGameBoardCleared();
+
 }

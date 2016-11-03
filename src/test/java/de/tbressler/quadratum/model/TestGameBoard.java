@@ -219,6 +219,16 @@ public class TestGameBoard {
     }
 
     /**
+     * Checks if clear() notifies listeners, that game board was cleared.
+     */
+    @Test
+    public void clear_notifiesListenersOnGameBoardCleared() {
+        gameBoard.clear();
+        verify(listener, times(1)).onGameBoardCleared();
+    }
+
+
+    /**
      * Checks if an exception is thrown the given listener is null.
      */
     @Test(expected = NullPointerException.class)
