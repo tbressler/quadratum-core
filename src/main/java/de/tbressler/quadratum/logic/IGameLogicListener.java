@@ -25,8 +25,18 @@ public interface IGameLogicListener {
      */
     void onNewSquareFound(Square square);
 
-    void onActivePlayerChanged(Player player);
+    /**
+     * Method is called when the active player changed.
+     *
+     * @param activePlayer The active player, never null.
+     */
+    void onActivePlayerChanged(Player activePlayer);
 
+    /**
+     * Method is called when a game was started.
+     *
+     * @param activePlayer The active player, never null.
+     */
     void onGameStarted(Player activePlayer);
 
 }
