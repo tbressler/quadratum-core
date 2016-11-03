@@ -113,6 +113,15 @@ public class TestGameBoard {
     }
 
     /**
+     * Checks if an exception is thrown if the given field index is not empty.
+     */
+    @Test(expected = AssertionError.class)
+    public void placePiece_ifFieldIsNotEmpty_throwsException() {
+        gameBoard.placePiece(1, player1);
+        gameBoard.placePiece(1, player2);
+    }
+
+    /**
      * Checks if placePiece() notifies all game board listeners about the placed piece.
      */
     @Test
