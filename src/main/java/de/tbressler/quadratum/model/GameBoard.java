@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class GameBoard implements IReadableGameBoard {
+public class GameBoard implements IReadOnlyGameBoard {
 
     /* Player one. */
     private final Player player1;

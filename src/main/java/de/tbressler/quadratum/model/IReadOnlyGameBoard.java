@@ -7,7 +7,7 @@ package de.tbressler.quadratum.model;
  * @author Tobias Bressler
  * @version 1.0
  */
-public interface IReadableGameBoard {
+public interface IReadOnlyGameBoard {
 
     /**
      * Returns the first player.

@@ -1,5 +1,6 @@
 package de.tbressler.quadratum.logic;
 
+import de.tbressler.quadratum.model.IReadOnlyGameBoard;
 import de.tbressler.quadratum.model.Player;
 
 /**
@@ -17,7 +18,12 @@ public interface IPlayerLogic {
      */
     Player getPlayer();
 
-
-    int placePiece();
+    /**
+     * Requests a move at the player logic.
+     *
+     * @param gameBoard The game board (read-only), never null.
+     * @param callback The callback of the game logic, never null.
+     */
+    void requestMove(IReadOnlyGameBoard gameBoard, ILogicCallback callback);
 
 }
