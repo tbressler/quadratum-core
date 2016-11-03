@@ -17,4 +17,7 @@ public interface IPlayerLogic {
      */
     Player getPlayer();
 
+
+    int placePiece();
+
 }

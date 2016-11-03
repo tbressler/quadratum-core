@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
  * @author Tobias Bressler
  * @version 1.0
  */
-public class GameBoard {
+public class GameBoard implements IReadableGameBoard {
 
     /* Player one. */
     private final Player player1;
@@ -42,21 +42,13 @@ public class GameBoard {
     }
 
 
-    /**
-     * Returns the first player.
-     *
-     * @return The first player, never null.
-     */
+    @Override
     public Player getPlayer1() {
         return player1;
     }
 
 
-    /**
-     * Returns the second player.
-     *
-     * @return The second player, never null.
-     */
+    @Override
     public Player getPlayer2() {
         return player2;
     }
@@ -106,12 +98,7 @@ public class GameBoard {
     }
 
 
-    /**
-     * Returns true if the field is empty. Otherwise this method returns false.
-     *
-     * @param index The field index, between 0 and 63.
-     * @return true if the field is empty or false.
-     */
+    @Override
     public boolean isFieldEmpty(int index) {
         checkFieldIndex(index);
         return (board[index] == 0);
@@ -124,13 +111,7 @@ public class GameBoard {
     }
 
 
-    /**
-     * Returns the player who placed the piece on the game board or null if no piece was placed
-     * on the given field.
-     *
-     * @param index The field index, between 0 and 63.
-     * @return The player who placed the piece or null if no piece was placed.
-     */
+    @Override
     public Player getPiece(int index) {
         checkFieldIndex(index);
         if (board[index] == 0)
@@ -139,20 +120,12 @@ public class GameBoard {
     }
 
 
-    /**
-     * Adds a listener to the game board.
-     *
-     * @param listener the listener, must not be null.
-     */
+    @Override
     public void addGameBoardListener(IGameBoardListener listener) {
         listeners.add(requireNonNull(listener));
     }
 
-    /**
-     * Removes a listener from the game board.
-     *
-     * @param listener the listener, must not be null.
-     */
+    @Override
     public void removeGameBoardListener(IGameBoardListener listener) {
         listeners.remove(requireNonNull(listener));
     }
