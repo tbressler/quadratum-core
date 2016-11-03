@@ -104,6 +104,25 @@ public class TestGameLogic {
     }
 
 
+    /**
+     * Checks if isStarted() returns false after the initialization of the game logic, because
+     * the game has not started yet.
+     */
+    @Test
+    public void isStarted_returnsFalse_afterNew() {
+        assertEquals(false, gameLogic.isStarted());
+    }
+
+
+    /**
+     * Checks if the active player is null after the initialization of the game logic, because
+     * the game has not started yet.
+     */
+    @Test
+    public void getActivePlayer_returnsNull_afterNew() {
+        assertEquals(null, gameLogic.getActivePlayer());
+    }
+
     // --------------------
 
 //    /**
@@ -115,14 +134,6 @@ public class TestGameLogic {
 //        assertEquals(true, gameBoard.isStarted());
 //    }
 //
-//    /**
-//     * Checks if the active player is null after the initialization of the game board, because
-//     * the game has not started yet.
-//     */
-//    @Test
-//    public void getActivePlayer_returnsNull_afterNew() {
-//        assertEquals(null, gameBoard.getActivePlayer());
-//    }
 //
 //    /**
 //     * Checks if getActivePlayer() returns player one after the game was started with player one
@@ -198,14 +209,6 @@ public class TestGameLogic {
 //    }
 //
 //
-//    /**
-//     * Checks if isStarted() returns false after the initialization of the game board, because
-//     * the game has not started yet.
-//     */
-//    @Test
-//    public void isStarted_returnsFalse_afterNew() {
-//        assertEquals(false, gameBoard.isStarted());
-//    }
 //
 //    /**
 //     * Checks if an exception is thrown if the given player is not the active player.

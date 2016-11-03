@@ -29,6 +29,12 @@ public class GameLogic {
     /* The player logic of player2. */
     private final IPlayerLogic playerLogic2;
 
+    /* Player of player logic 1. */
+    private final Player player1;
+
+    /* Player of player logic 2. */
+    private final Player player2;
+
     /* The squares. */
     private Set<Square> squares = new HashSet<>();
 
@@ -54,8 +60,8 @@ public class GameLogic {
         this.playerLogic1 = requireNonNull(playerLogic1);
         this.playerLogic2 = requireNonNull(playerLogic2);
 
-        Player player1 = requireNonNull(playerLogic1.getPlayer());
-        Player player2 = requireNonNull(playerLogic2.getPlayer());
+        this.player1 = requireNonNull(playerLogic1.getPlayer());
+        this.player2 = requireNonNull(playerLogic2.getPlayer());
 
         checkPlayers(gameBoard, player1, player2);
 
@@ -93,7 +99,7 @@ public class GameLogic {
     public void startGame(Player player) {
         checkStartGamePrecondition(activePlayer);
 
-        gameBoard.clearGameBoard();
+        gameBoard.clear();
         squares.clear();
 
         isStarted = true;
@@ -104,8 +110,8 @@ public class GameLogic {
 
     /* Checks if the active player is valid. */
     private void checkStartGamePrecondition(Player activePlayer) {
-        if (!(requireNonNull(activePlayer).equals(gameBoard.getPlayer1()) ||
-                requireNonNull(activePlayer).equals(gameBoard.getPlayer2())))
+        if (!(requireNonNull(activePlayer).equals(player1) ||
+                requireNonNull(activePlayer).equals(player2)))
             throw new AssertionError("Player is unknown at the game board!");
     }
 

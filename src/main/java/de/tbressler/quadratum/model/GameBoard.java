@@ -64,7 +64,7 @@ public class GameBoard {
     /**
      * Clears the game board.
      */
-    public void clearGameBoard() {
+    public void clear() {
         for (int i = 0; i < 64; i++)
             board[i] = 0;
     }
