@@ -97,15 +97,15 @@ public class GameLogic {
      * @param player The active player, who can do the first turn. Must not be null.
      */
     public void startGame(Player player) {
-        checkStartGamePrecondition(activePlayer);
+        checkStartGamePrecondition(player);
 
         gameBoard.clear();
         squares.clear();
 
         isStarted = true;
 
-        setActivePlayerTo(activePlayer);
-        fireOnGameStarted(activePlayer);
+        setActivePlayerTo(player);
+        fireOnGameStarted(player);
     }
 
     /* Checks if the active player is valid. */

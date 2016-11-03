@@ -6,8 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for class GameLogic.
@@ -29,6 +28,8 @@ public class TestGameLogic {
 
     private GameBoard gameBoard = mock(GameBoard.class, "gameBoard");
 
+    private IGameLogicListener listener = mock(IGameLogicListener.class, "listener");
+
 
     @Before
     public void setUp() {
@@ -37,6 +38,7 @@ public class TestGameLogic {
         when(playerLogic1.getPlayer()).thenReturn(player1);
         when(playerLogic2.getPlayer()).thenReturn(player2);
         gameLogic = new GameLogic(gameBoard, playerLogic1, playerLogic2);
+        gameLogic.addGameLogicListener(listener);
     }
 
 
@@ -113,6 +115,67 @@ public class TestGameLogic {
         assertEquals(false, gameLogic.isStarted());
     }
 
+    /**
+     * Checks if isStarted() returns true after the game is started.
+     */
+    @Test
+    public void isStarted_returnsTrue_afterGameIsStarted() {
+        gameLogic.startGame(player1);
+        assertEquals(true, gameLogic.isStarted());
+    }
+
+    /**
+     * Checks if an exception is thrown if the active player is null.
+     */
+    @Test(expected = NullPointerException.class)
+    public void startGame_withNull_throwsException() {
+        gameLogic.startGame(null);
+    }
+
+    /**
+     * Checks if an exception is thrown if the active player is not player one or two.
+     */
+    @Test(expected = AssertionError.class)
+    public void startGame_withUnknownPlayer_throwsException() {
+        gameLogic.startGame(mock(Player.class, "unknown-player"));
+    }
+
+    /**
+     * Checks if startGame() notifies the game logic listeners that the active player has changed.
+     */
+    @Test
+    public void startGame__withPlayer1_notifiesListenersOnActivePlayerChanged() {
+        gameLogic.startGame(player1);
+        verify(listener, times(1)).onActivePlayerChanged(player1);
+    }
+
+    /**
+     * Checks if startGame() notifies the game logic listeners that the game has started.
+     */
+    @Test
+    public void startGame_withPlayer1_notifiesListenersOnGameStarted() {
+        gameLogic.startGame(player1);
+        verify(listener, times(1)).onGameStarted(player1);
+    }
+
+    /**
+     * Checks if startGame() notifies the game logic listeners that the active player has changed.
+     */
+    @Test
+    public void startGame__withPlayer2_notifiesListenersOnActivePlayerChanged() {
+        gameLogic.startGame(player2);
+        verify(listener, times(1)).onActivePlayerChanged(player2);
+    }
+
+    /**
+     * Checks if startGame() notifies the game logic listeners that the game has started.
+     */
+    @Test
+    public void startGame_withPlayer2_notifiesListenersOnGameStarted() {
+        gameLogic.startGame(player2);
+        verify(listener, times(1)).onGameStarted(player2);
+    }
+
 
     /**
      * Checks if the active player is null after the initialization of the game logic, because
@@ -123,54 +186,27 @@ public class TestGameLogic {
         assertEquals(null, gameLogic.getActivePlayer());
     }
 
-    // --------------------
+    /**
+     * Checks if getActivePlayer() returns player one after the game was started with player one
+     * as active player.
+     */
+    @Test
+    public void getActivePlayer_returnsPlayer1_ifGameIsStartedWithPlayer1() {
+        gameLogic.startGame(player1);
+        assertEquals(player1, gameLogic.getActivePlayer());
+    }
 
-//    /**
-//     * Checks if isStarted() returns true after the game is started.
-//     */
-//    @Test
-//    public void isStarted_returnsTrue_afterGameIsStarted() {
-//        gameBoard.startGame(player1);
-//        assertEquals(true, gameBoard.isStarted());
-//    }
-//
-//
-//    /**
-//     * Checks if getActivePlayer() returns player one after the game was started with player one
-//     * as active player.
-//     */
-//    @Test
-//    public void getActivePlayer_returnsPlayer1_ifGameIsStartedWithPlayer1() {
-//        gameBoard.startGame(player1);
-//        assertEquals(player1, gameBoard.getActivePlayer());
-//    }
-//
-//    /**
-//     * Checks if getActivePlayer() returns player two after the game was started with player two
-//     * as active player.
-//     */
-//    @Test
-//    public void getActivePlayer_returnsPlayer2_ifGameIsStartedWithPlayer2() {
-//        gameBoard.startGame(player2);
-//        assertEquals(player2, gameBoard.getActivePlayer());
-//    }
-//
-//
-//    /**
-//     * Checks if an exception is thrown if the active player is null.
-//     */
-//    @Test(expected = NullPointerException.class)
-//    public void startGame_withNull_throwsException() {
-//        gameBoard.startGame(null);
-//    }
-//
-//    /**
-//     * Checks if an exception is thrown if the active player is not player one or two.
-//     */
-//    @Test(expected = AssertionError.class)
-//    public void startGame_withUnknownPlayer_throwsException() {
-//        gameBoard.startGame(mock(Player.class, "unknown-player"));
-//    }
+    /**
+     * Checks if getActivePlayer() returns player two after the game was started with player two
+     * as active player.
+     */
+    @Test
+    public void getActivePlayer_returnsPlayer2_ifGameIsStartedWithPlayer2() {
+        gameLogic.startGame(player2);
+        assertEquals(player2, gameLogic.getActivePlayer());
+    }
+
+// --------------------
 //
 //    /**
 //     * Checks if startGame() clears the game board.
@@ -191,26 +227,6 @@ public class TestGameLogic {
 //    }
 //
 //    /**
-//     * Checks if startGame() notifies the game board listeners that the active player has changed.
-//     */
-//    @Test
-//    public void startGame_notifiesListeners_onActivePlayerChanged() {
-//        gameBoard.startGame(player1);
-//        verify(listener, times(1)).onActivePlayerChanged(player1);
-//    }
-//
-//    /**
-//     * Checks if startGame() notifies the game board listeners that the game has started.
-//     */
-//    @Test
-//    public void startGame_notifiesListeners_onGameStarted() {
-//        gameBoard.startGame(player1);
-//        verify(listener, times(1)).onGameStarted(player1);
-//    }
-//
-//
-//
-//    /**
 //     * Checks if an exception is thrown if the given player is not the active player.
 //     */
 //    @Test(expected = AssertionError.class)
@@ -225,8 +241,8 @@ public class TestGameLogic {
 //    public void placePiece_ifGameIsNotStarted_throwsException() {
 //        gameBoard.placePiece(0, player1);
 //    }
-
-    // --------------------
+//
+// --------------------
 
 
     @Test
