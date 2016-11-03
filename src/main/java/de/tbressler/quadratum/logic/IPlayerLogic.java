@@ -10,6 +10,11 @@ import de.tbressler.quadratum.model.Player;
  */
 public interface IPlayerLogic {
 
+    /**
+     * Returns the player of this logic.
+     *
+     * @return The player, never null.
+     */
     Player getPlayer();
 
 }
