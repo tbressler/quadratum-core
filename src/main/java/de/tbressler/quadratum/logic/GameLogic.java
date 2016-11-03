@@ -37,8 +37,8 @@ public class GameLogic {
     /* The squares. */
     private Set<Square> squares = new HashSet<>();
 
-    /* The active player. */
-    private Player activePlayer;
+    /* The active player logic. */
+    private IPlayerLogic activePlayerLogic;
 
     /* Is true if the game was started, otherwise false. */
     private boolean isStarted = false;
@@ -87,7 +87,11 @@ public class GameLogic {
 
         isStarted = true;
 
-        setActivePlayerTo(player);
+        if (player.equals(player1))
+            setActivePlayerLogicTo(playerLogic1);
+        else
+            setActivePlayerLogicTo(playerLogic2);
+
         fireOnGameStarted(player);
     }
 
@@ -105,9 +109,9 @@ public class GameLogic {
     }
 
     /* Changes the active player to the given player. */
-    private void setActivePlayerTo(Player player) {
-        this.activePlayer = player;
-        fireOnActivePlayerChanged(player);
+    private void setActivePlayerLogicTo(IPlayerLogic playerLogic) {
+        this.activePlayerLogic = playerLogic;
+        fireOnActivePlayerChanged(playerLogic.getPlayer());
     }
 
     /* Notifies all listeners that the active player has changed. */
@@ -123,7 +127,18 @@ public class GameLogic {
      * @return The active player or null.
      */
     public Player getActivePlayer() {
-        return activePlayer;
+        if (activePlayerLogic == null)
+            return null;
+        return activePlayerLogic.getPlayer();
+    }
+
+    /**
+     * Returns the active player logic or null if the game has not started yet.
+     *
+     * @return The active player logic or null.
+     */
+    public IPlayerLogic getActivePlayerLogic() {
+        return activePlayerLogic;
     }
 
 

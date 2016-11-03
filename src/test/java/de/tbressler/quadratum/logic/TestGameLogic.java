@@ -206,6 +206,35 @@ public class TestGameLogic {
         assertEquals(player2, gameLogic.getActivePlayer());
     }
 
+    /**
+     * Checks if the active player logic is null after the initialization of the game logic, because
+     * the game has not started yet.
+     */
+    @Test
+    public void getActivePlayerLogic_returnsNull_afterNew() {
+        assertEquals(null, gameLogic.getActivePlayerLogic());
+    }
+
+    /**
+     * Checks if getActivePlayerLogic() returns player logic one after the game was started with player one
+     * as active player.
+     */
+    @Test
+    public void getActivePlayerLogic_returnsPlayerLogic1_ifGameIsStartedWithPlayer1() {
+        gameLogic.startGame(player1);
+        assertEquals(playerLogic1, gameLogic.getActivePlayerLogic());
+    }
+
+    /**
+     * Checks if getActivePlayerLogic() returns player logic two after the game was started with player two
+     * as active player.
+     */
+    @Test
+    public void getActivePlayerLogic_returnsPlayerLogic2_ifGameIsStartedWithPlayer2() {
+        gameLogic.startGame(player2);
+        assertEquals(playerLogic2, gameLogic.getActivePlayerLogic());
+    }
+
 // --------------------
 //
 //    /**
