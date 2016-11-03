@@ -207,6 +207,18 @@ public class TestGameBoard {
 
 
     /**
+     * Checks if clear() clears the game board.
+     */
+    @Test
+    public void clear_clearsGameBoard() {
+        gameBoard.placePiece(10, player1);
+        gameBoard.placePiece(15, player2);
+        gameBoard.clear();
+        assertEquals(null, gameBoard.getPiece(10));
+        assertEquals(null, gameBoard.getPiece(15));
+    }
+
+    /**
      * Checks if an exception is thrown the given listener is null.
      */
     @Test(expected = NullPointerException.class)
