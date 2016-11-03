@@ -126,12 +126,9 @@ public class GameBoard {
      */
     public Player getPiece(int index) {
         checkFieldIndex(index);
-        int piece = board[index];
-        if (piece == 1)
-            return player1;
-        else if (piece == 2)
-            return player2;
-        return null;
+        if (board[index] == 0)
+            return null;
+        return (board[index] == 1) ? player1 : player2;
     }
 
 
