@@ -69,12 +69,8 @@ public class GameLogic {
     private void checkPlayers(GameBoard gameBoard, Player player1, Player player2) {
         if (player1.equals(player2))
             throw new AssertionError("playerLogic1 and playerLogic2 uses the same player!");
-        if (!player1.equals(gameBoard.getPlayer1()))
-            throw new AssertionError("Player 1 of game board is different to player " +
-                    "of playerLogic1!");
-        if (!player2.equals(gameBoard.getPlayer2()))
-            throw new AssertionError("Player 2 of game board is different to player " +
-                    "of playerLogic2!");
+        if ((!player1.equals(gameBoard.getPlayer1())) || (!player2.equals(gameBoard.getPlayer2())))
+            throw new AssertionError("Players of logic and game board doesn't match!");
     }
 
 
