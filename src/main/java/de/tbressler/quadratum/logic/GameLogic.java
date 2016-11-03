@@ -46,6 +46,14 @@ public class GameLogic {
     /* The listeners. */
     private List<IGameLogicListener> listeners = new ArrayList<>();
 
+    /* Callback for the player logic. */
+    private ILogicCallback playerLogicCallback = new ILogicCallback() {
+        @Override
+        public void makeMove(int index, Player player) {
+            // TODO Make move!
+        }
+    };
+
 
     /**
      * Creates the game logic.
@@ -87,12 +95,12 @@ public class GameLogic {
 
         isStarted = true;
 
+        fireOnGameStarted(player);
+
         if (player.equals(player1))
             setActivePlayerLogicTo(playerLogic1);
         else
             setActivePlayerLogicTo(playerLogic2);
-
-        fireOnGameStarted(player);
     }
 
     /* Checks if the active player is valid. */
@@ -112,6 +120,9 @@ public class GameLogic {
     private void setActivePlayerLogicTo(IPlayerLogic playerLogic) {
         this.activePlayerLogic = playerLogic;
         fireOnActivePlayerChanged(playerLogic.getPlayer());
+
+        // Request move at the player logic.
+        playerLogic.requestMove(gameBoard, playerLogicCallback);
     }
 
     /* Notifies all listeners that the active player has changed. */

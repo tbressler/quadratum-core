@@ -176,6 +176,24 @@ public class TestGameLogic {
         verify(listener, times(1)).onGameStarted(player2);
     }
 
+    /**
+     * Checks if startGame() requests a move at player logic 1, if game was started with player 1.
+     */
+    @Test
+    public void startGame_withPlayer1_requestsMoveAtPlayerLogic1() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), any(ILogicCallback.class));
+    }
+
+    /**
+     * Checks if startGame() requests a move at player logic 2, if game was started with player 2.
+     */
+    @Test
+    public void startGame_withPlayer2_requestsMoveAtPlayerLogic2() {
+        gameLogic.startGame(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), any(ILogicCallback.class));
+    }
+
 
     /**
      * Checks if the active player is null after the initialization of the game logic, because
