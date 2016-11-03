@@ -21,14 +21,8 @@ public class GameBoard {
     /* Player two. */
     private final Player player2;
 
-    /* The active player. */
-    private Player activePlayer;
-
     /* The fields of the game board. */
     private int[] board = new int[64];
-
-    /* Is true if the game was started, otherwise false. */
-    private boolean isStarted = false;
 
     /* The game board listeners. */
     private List<IGameBoardListener> listeners = new ArrayList<>();
@@ -67,73 +61,12 @@ public class GameBoard {
         return player2;
     }
 
-
     /**
-     * Returns the active player or null if the game has not started yet.
-     *
-     * @return The active player or null.
+     * Clears the game board.
      */
-    public Player getActivePlayer() {
-        return activePlayer;
-    }
-
-
-    /**
-     * Starts the game. Clears the game board if a game was started before.
-     *
-     * @param activePlayer The active player, who can do the first turn. Must not be null.
-     */
-    public void startGame(Player activePlayer) {
-        checkStartGamePrecondition(activePlayer);
-
-        clearGameBoard();
-
-        isStarted = true;
-
-        setActivePlayerTo(activePlayer);
-        fireOnGameStarted(activePlayer);
-    }
-
-    /* Checks if the active player is valid. */
-    private void checkStartGamePrecondition(Player activePlayer) {
-        if (!(requireNonNull(activePlayer).equals(player1) ||
-              requireNonNull(activePlayer).equals(player2)))
-            throw new AssertionError("Player is unknown at the game board!");
-    }
-
-    /** Clears the game board. */
-    private void clearGameBoard() {
+    public void clearGameBoard() {
         for (int i = 0; i < 64; i++)
             board[i] = 0;
-    }
-
-    /* Notifies the game board listeners that the game has started. */
-    private void fireOnGameStarted(Player activePlayer) {
-        for (IGameBoardListener listener : listeners)
-            listener.onGameStarted(activePlayer);
-    }
-
-
-    /* Changes the active player to the given player. */
-    private void setActivePlayerTo(Player player) {
-        this.activePlayer = player;
-        fireOnActivePlayerChanged(player);
-    }
-
-    /* Notifies all listeners that the active player has changed. */
-    private void fireOnActivePlayerChanged(Player player) {
-        for (IGameBoardListener listener: listeners)
-            listener.onActivePlayerChanged(player);
-    }
-
-
-    /**
-     * Returns true if the game was started, otherwise the method returns false.
-     *
-     * @return true if the game was started, otherwise false.
-     */
-    public boolean isStarted() {
-        return isStarted;
     }
 
 
@@ -145,29 +78,16 @@ public class GameBoard {
      */
     public void placePiece(int index, Player player) {
         checkPlacePiecePrecondition(index, player);
-
-        // Place piece and set next player:
-        if (player.equals(player1)) {
-            board[index] = 1;
-            setActivePlayerTo(player2);
-        } else if (player == player2) {
-            board[index] = 2;
-            setActivePlayerTo(player1);
-        }
-
+        board[index] = (player.equals(player1)) ? 1 : 2;
         fireOnPiecePlaced(index, player);
     }
 
     /* Checks the preconditions for placing a piece on the game board. */
     private void checkPlacePiecePrecondition(int index, Player player) {
-        if (!isStarted())
-            throw new AssertionError("The game is not started yet!");
         checkFieldIndex(index);
-        checkStartGamePrecondition(player);
-        if (!getActivePlayer().equals(player))
-            throw new AssertionError("The player is not active currently!");
-
-        // Check if field is empty
+        if (!(requireNonNull(player).equals(player1) ||
+                requireNonNull(player).equals(player2)))
+            throw new AssertionError("Player is unknown at the game board!");
         if (!isFieldEmpty(index))
             throw new AssertionError("The given field index is not empty!");
     }
@@ -177,6 +97,7 @@ public class GameBoard {
         for(IGameBoardListener listener : listeners)
             listener.onPiecePlaced(index, player);
     }
+
 
     /**
      * Returns true if the field is empty. Otherwise this method returns false.

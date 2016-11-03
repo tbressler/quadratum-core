@@ -32,6 +32,12 @@ public class GameLogic {
     /* The squares. */
     private Set<Square> squares = new HashSet<>();
 
+    /* The active player. */
+    private Player activePlayer;
+
+    /* Is true if the game was started, otherwise false. */
+    private boolean isStarted = false;
+
     /* The listeners. */
     private List<IGameLogicListener> listeners = new ArrayList<>();
 
@@ -72,17 +78,7 @@ public class GameLogic {
     private void initGameBoard() {
         gameBoard.addGameBoardListener(new IGameBoardListener() {
             @Override
-            public void onActivePlayerChanged(Player newPlayer) {
-                // TODO Not implemented yet!
-            }
-
-            @Override
             public void onPiecePlaced(int index, Player player) {
-                // TODO Not implemented yet!
-            }
-
-            @Override
-            public void onGameStarted(Player activePlayer) {
                 // TODO Not implemented yet!
             }
         });
@@ -90,13 +86,65 @@ public class GameLogic {
 
 
     /**
-     * (Re)starts game.
+     * Starts the game. Clears the game board if a game was started before.
      *
      * @param player The active player, who can do the first turn. Must not be null.
      */
     public void startGame(Player player) {
+        checkStartGamePrecondition(activePlayer);
+
+        gameBoard.clearGameBoard();
         squares.clear();
-        gameBoard.startGame(requireNonNull(player));
+
+        isStarted = true;
+
+        setActivePlayerTo(activePlayer);
+        fireOnGameStarted(activePlayer);
+    }
+
+    /* Checks if the active player is valid. */
+    private void checkStartGamePrecondition(Player activePlayer) {
+        if (!(requireNonNull(activePlayer).equals(gameBoard.getPlayer1()) ||
+                requireNonNull(activePlayer).equals(gameBoard.getPlayer2())))
+            throw new AssertionError("Player is unknown at the game board!");
+    }
+
+    /* Notifies the game board listeners that the game has started. */
+    private void fireOnGameStarted(Player activePlayer) {
+        for (IGameLogicListener listener : listeners)
+            listener.onGameStarted(activePlayer);
+    }
+
+    /* Changes the active player to the given player. */
+    private void setActivePlayerTo(Player player) {
+        this.activePlayer = player;
+        fireOnActivePlayerChanged(player);
+    }
+
+    /* Notifies all listeners that the active player has changed. */
+    private void fireOnActivePlayerChanged(Player player) {
+        for (IGameLogicListener listener: listeners)
+            listener.onActivePlayerChanged(player);
+    }
+
+
+    /**
+     * Returns the active player or null if the game has not started yet.
+     *
+     * @return The active player or null.
+     */
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+
+
+    /**
+     * Returns true if the game was started, otherwise the method returns false.
+     *
+     * @return true if the game was started, otherwise false.
+     */
+    public boolean isStarted() {
+        return isStarted;
     }
 
 

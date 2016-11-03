@@ -25,4 +25,8 @@ public interface IGameLogicListener {
      */
     void onNewSquareFound(Square square);
 
+    void onActivePlayerChanged(Player player);
+
+    void onGameStarted(Player activePlayer);
+
 }
