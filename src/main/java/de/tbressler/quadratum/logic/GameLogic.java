@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.collect.Range.closed;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -49,8 +50,22 @@ public class GameLogic {
     /* Callback for the player logic. */
     private ILogicCallback playerLogicCallback = new ILogicCallback() {
         @Override
-        public void makeMove(int index, Player player) {
-            // TODO Make move!
+        public boolean makeMove(int index, Player player) {
+            if (!isStarted)
+                throw new AssertionError("Game is not started!");
+            if (!player.equals(activePlayerLogic.getPlayer()))
+                throw new AssertionError("The player is not active!");
+            if (!closed(0, 63).contains(index))
+                throw new AssertionError("Index must be between 0 and 63!");
+
+            if (!gameBoard.isFieldEmpty(index))
+                return false;
+
+            gameBoard.placePiece(index, player);
+
+            switchActivePlayer();
+
+            return true;
         }
     };
 
@@ -114,6 +129,13 @@ public class GameLogic {
     private void fireOnGameStarted(Player activePlayer) {
         for (IGameLogicListener listener : listeners)
             listener.onGameStarted(activePlayer);
+    }
+
+    private void switchActivePlayer() {
+        if (activePlayerLogic.equals(playerLogic1))
+            setActivePlayerLogicTo(playerLogic2);
+        else
+            setActivePlayerLogicTo(playerLogic1);
     }
 
     /* Changes the active player to the given player. */

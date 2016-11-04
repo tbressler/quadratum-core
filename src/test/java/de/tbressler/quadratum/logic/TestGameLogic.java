@@ -4,8 +4,10 @@ import de.tbressler.quadratum.model.GameBoard;
 import de.tbressler.quadratum.model.Player;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
 /**
@@ -29,6 +31,10 @@ public class TestGameLogic {
     private GameBoard gameBoard = mock(GameBoard.class, "gameBoard");
 
     private IGameLogicListener listener = mock(IGameLogicListener.class, "listener");
+
+    // Capture:
+    private ArgumentCaptor<ILogicCallback> callback = forClass(ILogicCallback.class);
+
 
 
     @Before
@@ -192,6 +198,111 @@ public class TestGameLogic {
     public void startGame_withPlayer2_requestsMoveAtPlayerLogic2() {
         gameLogic.startGame(player2);
         verify(playerLogic2, times(1)).requestMove(eq(gameBoard), any(ILogicCallback.class));
+    }
+
+    @Test
+    public void startGame_withPlayerLogic1MakesValidMove_placesPieceOnGameBoard() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        assertTrue(callback.getValue().makeMove(1, player1));
+        verify(gameBoard, times(1)).placePiece(1, player1);
+    }
+
+    @Test
+    public void startGame_withPlayerLogic1MakesMoveOnEmptyField_callbackReturnsFalse() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameBoard.isFieldEmpty(1)).thenReturn(false);
+
+        assertFalse(callback.getValue().makeMove(1, player1));
+        verify(gameBoard, never()).placePiece(1, player1);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void startGame_withPlayerLogic1MakesInvalidMoveWithInvalidPlayer_throwsException() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+
+        callback.getValue().makeMove(1, player2);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void startGame_withPlayerLogic1MakesInvalidMoveWithIndexLowerThan0_throwsException() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+
+        callback.getValue().makeMove(-1, player1);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void startGame_withPlayerLogic1MakesInvalidMoveWithIndexGreaterThan63_throwsException() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+
+        callback.getValue().makeMove(64, player1);
+    }
+
+    @Test
+    public void startGame_withPlayerLogic2MakesValidMove_placesPieceOnGameBoard() {
+        gameLogic.startGame(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        assertTrue(callback.getValue().makeMove(1, player2));
+        verify(gameBoard, times(1)).placePiece(1, player2);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void startGame_withPlayerLogic2MakesInvalidMoveWithInvalidPlayer_throwsException() {
+        gameLogic.startGame(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
+
+        callback.getValue().makeMove(1, player1);
+    }
+
+    @Test
+    public void startGame_withPlayerLogic1MakesValidMove_switchesActivePlayer() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player1);
+        assertEquals(player2, gameLogic.getActivePlayer());
+        verify(listener, times(1)).onActivePlayerChanged(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
+    }
+
+    @Test
+    public void startGame_withPlayerLogic2MakesValidMove_switchesActivePlayer() {
+        gameLogic.startGame(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player2);
+        assertEquals(player1, gameLogic.getActivePlayer());
+        verify(listener, times(1)).onActivePlayerChanged(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+    }
+
+
+    @Test
+    public void startGame_withValidMovesAndPlayerSwitches() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player1);
+        assertEquals(player2, gameLogic.getActivePlayer());
+        verify(listener, times(1)).onActivePlayerChanged(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
+        verify(gameBoard, times(1)).placePiece(1, player1);
+
+        when(gameBoard.isFieldEmpty(2)).thenReturn(true);
+        callback.getValue().makeMove(2, player2);
+        assertEquals(player1, gameLogic.getActivePlayer());
+        verify(gameBoard, times(1)).placePiece(2, player2);
     }
 
 

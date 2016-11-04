@@ -11,11 +11,12 @@ import de.tbressler.quadratum.model.Player;
 interface ILogicCallback {
 
     /**
-     * Make the move.
+     * Make the move on the game board.
      *
-     * @param index The index of the field, between 0..63.
+     * @param index The field index, between 0..63.
      * @param player The player, never null.
+     * @return True if the move was successful or false if not.
      */
-    void makeMove(int index, Player player);
+    boolean makeMove(int index, Player player);
 
 }
