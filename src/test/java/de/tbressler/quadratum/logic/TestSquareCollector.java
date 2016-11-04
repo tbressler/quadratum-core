@@ -175,4 +175,16 @@ public class TestSquareCollector {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    public void detect_calledSecondTimeForSameSquareOnGameBoard_returnsEmptySet() {
+        when(gameBoard.getPiece(1)).thenReturn(player1);
+        when(gameBoard.getPiece(15)).thenReturn(player1);
+        when(gameBoard.getPiece(48)).thenReturn(player1);
+        when(gameBoard.getPiece(62)).thenReturn(player1);
+        squareCollector.detect(gameBoard, player1);
+
+        Set<Square> result = squareCollector.detect(gameBoard, player1);
+        assertTrue(result.isEmpty());
+    }
+
 }
