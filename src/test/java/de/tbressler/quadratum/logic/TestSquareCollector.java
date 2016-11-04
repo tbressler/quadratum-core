@@ -44,15 +44,49 @@ public class TestSquareCollector {
     }
 
     @Test
-    public void getSquares_after2SquaresDetected_returnsSetWith2Squares() {
-        // TODO Write test!
+    public void getSquares_afterReset_clearsSquares() {
+        when(gameBoard.getPiece(0)).thenReturn(player1);
+        when(gameBoard.getPiece(1)).thenReturn(player1);
+        when(gameBoard.getPiece(8)).thenReturn(player1);
+        when(gameBoard.getPiece(9)).thenReturn(player1);
+        squareCollector.detect(gameBoard, player1);
+
+        squareCollector.reset();
+        assertTrue(squareCollector.getSquares().isEmpty());
     }
 
     @Test
-    public void getSquares_afterReset_clearsSquares() {
-        // TODO Fill squares!
-        squareCollector.reset();
-        assertTrue(squareCollector.getSquares().isEmpty());
+    public void getSquares_afterSquareWasDetected_returnsSetWithSquare() {
+        when(gameBoard.getPiece(0)).thenReturn(player2);
+        when(gameBoard.getPiece(1)).thenReturn(player2);
+        when(gameBoard.getPiece(8)).thenReturn(player2);
+        when(gameBoard.getPiece(9)).thenReturn(player2);
+
+        squareCollector.detect(gameBoard, player2);
+        Set<Square> result = squareCollector.getSquares();
+
+        assertEquals(1, result.size());
+        assertTrue(result.contains(new Square(new int[]{0,1,8,9}, player2)));
+    }
+
+    @Test
+    public void getSquares_withSquareForPlayer1and2_returnsSetWithBothSquares() {
+        when(gameBoard.getPiece(1)).thenReturn(player1);
+        when(gameBoard.getPiece(15)).thenReturn(player1);
+        when(gameBoard.getPiece(48)).thenReturn(player1);
+        when(gameBoard.getPiece(62)).thenReturn(player1);
+        when(gameBoard.getPiece(9)).thenReturn(player2);
+        when(gameBoard.getPiece(19)).thenReturn(player2);
+        when(gameBoard.getPiece(24)).thenReturn(player2);
+        when(gameBoard.getPiece(34)).thenReturn(player2);
+        squareCollector.detect(gameBoard, player1);
+        squareCollector.detect(gameBoard, player2);
+
+        Set<Square> result = squareCollector.getSquares();
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains(new Square(new int[]{1,15,48,62}, player1)));
+        assertTrue(result.contains(new Square(new int[]{9,19,24,34}, player2)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -89,6 +123,22 @@ public class TestSquareCollector {
 
         assertEquals(1, result.size());
         assertTrue(result.contains(new Square(new int[]{0,1,8,9}, player2)));
+    }
+
+    @Test
+    public void detect_withSquareForPlayer1and2_returnsEmptySetForPlayer1Only() {
+        when(gameBoard.getPiece(1)).thenReturn(player1);
+        when(gameBoard.getPiece(15)).thenReturn(player1);
+        when(gameBoard.getPiece(48)).thenReturn(player1);
+        when(gameBoard.getPiece(62)).thenReturn(player1);
+        when(gameBoard.getPiece(9)).thenReturn(player2);
+        when(gameBoard.getPiece(19)).thenReturn(player2);
+        when(gameBoard.getPiece(24)).thenReturn(player2);
+        when(gameBoard.getPiece(34)).thenReturn(player2);
+        Set<Square> result = squareCollector.detect(gameBoard, player1);
+
+        assertEquals(1, result.size());
+        assertTrue(result.contains(new Square(new int[]{1,15,48,62}, player1)));
     }
 
     @Test
