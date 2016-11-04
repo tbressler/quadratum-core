@@ -32,6 +32,8 @@ public class TestGameLogic {
 
     private IGameLogicListener listener = mock(IGameLogicListener.class, "listener");
 
+    private SquareCollector squareCollector = mock(SquareCollector.class, "squareCollector");
+
     // Capture:
     private ArgumentCaptor<ILogicCallback> callback = forClass(ILogicCallback.class);
 
@@ -44,6 +46,7 @@ public class TestGameLogic {
         when(playerLogic1.getPlayer()).thenReturn(player1);
         when(playerLogic2.getPlayer()).thenReturn(player2);
         gameLogic = new GameLogic(gameBoard, playerLogic1, playerLogic2);
+        gameLogic.setSquareCollector(squareCollector);
         gameLogic.addGameLogicListener(listener);
     }
 
@@ -102,13 +105,20 @@ public class TestGameLogic {
 
 
     @Test(expected = NullPointerException.class)
+    public void setSquareCollector_withNull_throwsException() {
+        gameLogic.setSquareCollector(null);
+    }
+
+
+    @Test(expected = NullPointerException.class)
     public void startGame_withNullPlayer_throwsException() {
         gameLogic.startGame(null);
     }
 
     @Test
-    public void startGame_clearsSquares() {
-        // TODO Test if squares get cleared!
+    public void startGame_resetsSquareCollector() {
+        gameLogic.startGame(player1);
+        verify(squareCollector, times(1)).reset();
     }
 
 

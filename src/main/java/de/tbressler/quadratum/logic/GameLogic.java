@@ -5,7 +5,6 @@ import de.tbressler.quadratum.model.Player;
 import de.tbressler.quadratum.model.Square;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,9 +34,6 @@ public class GameLogic {
     /* Player of player logic 2. */
     private final Player player2;
 
-    /* The squares. */
-    private Set<Square> squares = new HashSet<>();
-
     /* The active player logic. */
     private IPlayerLogic activePlayerLogic;
 
@@ -46,6 +42,9 @@ public class GameLogic {
 
     /* The listeners. */
     private List<IGameLogicListener> listeners = new ArrayList<>();
+
+    /* The squares. */
+    private SquareCollector squareCollector = new SquareCollector();
 
     /* Callback for the player logic. */
     private ILogicCallback playerLogicCallback = new ILogicCallback() {
@@ -98,6 +97,16 @@ public class GameLogic {
 
 
     /**
+     * Set the square collector. This method should only be used for testing purposes.
+     *
+     * @param squareCollector The square collector, must not be null.
+     */
+    public void setSquareCollector(SquareCollector squareCollector) {
+        this.squareCollector = requireNonNull(squareCollector);
+    }
+
+
+    /**
      * Starts the game. Clears the game board if a game was started before.
      *
      * @param player The active player, who can do the first turn. Must not be null.
@@ -106,7 +115,7 @@ public class GameLogic {
         checkStartGamePrecondition(player);
 
         gameBoard.clear();
-        squares.clear();
+        squareCollector.reset();
 
         isStarted = true;
 
@@ -131,6 +140,7 @@ public class GameLogic {
             listener.onGameStarted(activePlayer);
     }
 
+    /* Switches the active player. */
     private void switchActivePlayer() {
         if (activePlayerLogic.equals(playerLogic1))
             setActivePlayerLogicTo(playerLogic2);
@@ -201,7 +211,7 @@ public class GameLogic {
      * @return A set of squares or an empty set.
      */
     public Set<Square> getSquares() {
-        return squares;
+        return squareCollector.getDetectedSquares();
     }
 
 
