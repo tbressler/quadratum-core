@@ -3,6 +3,8 @@ package de.tbressler.quadratum.logic;
 import de.tbressler.quadratum.model.Player;
 import de.tbressler.quadratum.model.Square;
 
+import java.util.Set;
+
 /**
  * A listener for the game logic.
  *
@@ -19,11 +21,12 @@ public interface IGameLogicListener {
     void onGameOver(Player winner);
 
     /**
-     * Method is called when a new square was found.
+     * Method is called when new squares were found.
      *
-     * @param square The new square that was found, never null.
+     * @param player The player, never null.
+     * @param squares The new squares that were found, never null.
      */
-    void onNewSquareFound(Square square);
+    void onNewSquaresFound(Player player, Set<Square> squares);
 
     /**
      * Method is called when the active player changed.

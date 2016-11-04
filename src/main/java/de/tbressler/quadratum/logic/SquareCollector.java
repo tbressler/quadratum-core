@@ -99,6 +99,38 @@ public class SquareCollector {
 
 
     /**
+     * Returns the current number of squares for the given player.
+     *
+     * @param player The player, must not be null.
+     * @return The current number of squares
+     */
+    public int getSquareCountForPlayer(Player player) {
+        requireNonNull(player);
+        int count = 0;
+        for (Square square : squares)
+            if (square.getPlayer() == player)
+                count++;
+        return count;
+    }
+
+
+    /**
+     * Returns the current score for the given player.
+     *
+     * @param player The player, must not be null.
+     * @return The current score of the player
+     */
+    public int getScoreForPlayer(Player player) {
+        requireNonNull(player);
+        int score = 0;
+        for (Square square : squares)
+            if (square.getPlayer() == player)
+                score += square.getScore();
+        return score;
+    }
+
+
+    /**
      * Resets the square detector and clears all found squares.
      */
     public void reset() {

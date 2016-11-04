@@ -62,6 +62,10 @@ public class GameLogic {
 
             gameBoard.placePiece(index, player);
 
+            checkGameBoardForSquares(player);
+            if (checkIfGameIsOver())
+                return true;
+
             switchActivePlayer();
 
             return true;
@@ -103,6 +107,52 @@ public class GameLogic {
      */
     public void setSquareCollector(SquareCollector squareCollector) {
         this.squareCollector = requireNonNull(squareCollector);
+    }
+
+
+    /* Checks the game board for new squares. */
+    private void checkGameBoardForSquares(Player player) {
+        Set<Square> foundSquares = squareCollector.detect(gameBoard, player);
+        if (foundSquares.isEmpty())
+            return;
+        fireOnNewSquaresFound(player, foundSquares);
+    }
+
+    /* Notifies listener about new squares. */
+    private void fireOnNewSquaresFound(Player player, Set<Square> foundSquares) {
+        for(IGameLogicListener listener : listeners)
+            listener.onNewSquaresFound(player, foundSquares);
+    }
+
+
+    /* Returns true if the game is over, otherwise false. */
+    private boolean checkIfGameIsOver() {
+//        int scorePlayer1 = squareCollector.getScoreForPlayer(player1);
+//        int scorePlayer2 = squareCollector.getScoreForPlayer(player2);
+//
+//        // Check if one player has won the game
+//        if ((scorePlayer1 >= MIN_SCORE) || (scorePlayer2 >= MIN_SCORE)) {
+//
+//            int dif = scorePlayer1 - scorePlayer2;
+//
+//            if (dif >= MIN_DIFFERENCE) {
+//                fireGameDraw(player1);
+//                return true;
+//            } else if (dif <= -MIN_DIFFERENCE) {
+//                fireGameDraw(player2);
+//                return true;
+//            }
+//        }
+//
+//        if (!canPlayersDoMoreSquares()) {
+//            if (scorePlayer1 > scorePlayer2)
+//                fireGameDraw(player1);
+//            else if (scorePlayer2 > scorePlayer1)
+//                fireGameDraw(player2);
+//            else
+//                fireGameDraw(null);
+//        }
+        return false;
     }
 
 
