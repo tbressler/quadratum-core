@@ -187,4 +187,70 @@ public class TestSquareCollector {
         assertTrue(result.isEmpty());
     }
 
+
+    @Test
+    public void getScoreForPlayer_withPlayer1AfterNew_returns0() {
+        assertEquals(0, squareCollector.getScoreForPlayer(player1));
+    }
+
+    @Test
+    public void getScoreForPlayer_withPlayer2AfterNew_returns0() {
+        assertEquals(0, squareCollector.getScoreForPlayer(player2));
+    }
+
+    @Test
+    public void getScoreForPlayer_withPlayer1AndOneValidSquare_returns0() {
+        when(gameBoard.getPiece(36)).thenReturn(player1);
+        when(gameBoard.getPiece(39)).thenReturn(player1);
+        when(gameBoard.getPiece(60)).thenReturn(player1);
+        when(gameBoard.getPiece(63)).thenReturn(player1);
+        squareCollector.detect(gameBoard, player1);
+
+        assertEquals(9, squareCollector.getScoreForPlayer(player1));
+    }
+
+    @Test
+    public void getScoreForPlayer_withPlayer1AndOneSquareOfPlayer2_returns0() {
+        when(gameBoard.getPiece(36)).thenReturn(player2);
+        when(gameBoard.getPiece(39)).thenReturn(player2);
+        when(gameBoard.getPiece(60)).thenReturn(player2);
+        when(gameBoard.getPiece(63)).thenReturn(player2);
+        squareCollector.detect(gameBoard, player2);
+
+        assertEquals(0, squareCollector.getScoreForPlayer(player1));
+    }
+
+
+    @Test
+    public void getSquareCountForPlayer_withPlayer1AfterNew_returns0() {
+        assertEquals(0, squareCollector.getSquareCountForPlayer(player1));
+    }
+
+    @Test
+    public void getSquareCountForPlayer_withPlayer2AfterNew_returns0() {
+        assertEquals(0, squareCollector.getSquareCountForPlayer(player2));
+    }
+
+    @Test
+    public void getSquareCountForPlayer_withPlayer1AndOneValidSquare_returns0() {
+        when(gameBoard.getPiece(36)).thenReturn(player1);
+        when(gameBoard.getPiece(39)).thenReturn(player1);
+        when(gameBoard.getPiece(60)).thenReturn(player1);
+        when(gameBoard.getPiece(63)).thenReturn(player1);
+        squareCollector.detect(gameBoard, player1);
+
+        assertEquals(1, squareCollector.getSquareCountForPlayer(player1));
+    }
+
+    @Test
+    public void getSquareCountForPlayer_withPlayer1AndOneSquareOfPlayer2_returns0() {
+        when(gameBoard.getPiece(36)).thenReturn(player2);
+        when(gameBoard.getPiece(39)).thenReturn(player2);
+        when(gameBoard.getPiece(60)).thenReturn(player2);
+        when(gameBoard.getPiece(63)).thenReturn(player2);
+        squareCollector.detect(gameBoard, player2);
+
+        assertEquals(0, squareCollector.getSquareCountForPlayer(player1));
+    }
+
 }
