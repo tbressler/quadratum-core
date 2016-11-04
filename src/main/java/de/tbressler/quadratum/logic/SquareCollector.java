@@ -93,7 +93,7 @@ public class SquareCollector {
      *
      * @return A set of the squares, never null.
      */
-    public Set<Square> getSquares() {
+    public Set<Square> getDetectedSquares() {
         return squares;
     }
 

@@ -39,12 +39,12 @@ public class TestSquareCollector {
     }
 
     @Test
-    public void getSquares_afterConstruction_returnsEmptySet() {
-        assertTrue(squareCollector.getSquares().isEmpty());
+    public void getDetectedSquares_afterConstruction_returnsEmptySet() {
+        assertTrue(squareCollector.getDetectedSquares().isEmpty());
     }
 
     @Test
-    public void getSquares_afterReset_clearsSquares() {
+    public void getDetectedSquares_afterReset_clearsSquares() {
         when(gameBoard.getPiece(0)).thenReturn(player1);
         when(gameBoard.getPiece(1)).thenReturn(player1);
         when(gameBoard.getPiece(8)).thenReturn(player1);
@@ -52,25 +52,25 @@ public class TestSquareCollector {
         squareCollector.detect(gameBoard, player1);
 
         squareCollector.reset();
-        assertTrue(squareCollector.getSquares().isEmpty());
+        assertTrue(squareCollector.getDetectedSquares().isEmpty());
     }
 
     @Test
-    public void getSquares_afterSquareWasDetected_returnsSetWithSquare() {
+    public void getDetectedSquares_afterSquareWasDetected_returnsSetWithSquare() {
         when(gameBoard.getPiece(0)).thenReturn(player2);
         when(gameBoard.getPiece(1)).thenReturn(player2);
         when(gameBoard.getPiece(8)).thenReturn(player2);
         when(gameBoard.getPiece(9)).thenReturn(player2);
 
         squareCollector.detect(gameBoard, player2);
-        Set<Square> result = squareCollector.getSquares();
+        Set<Square> result = squareCollector.getDetectedSquares();
 
         assertEquals(1, result.size());
         assertTrue(result.contains(new Square(new int[]{0,1,8,9}, player2)));
     }
 
     @Test
-    public void getSquares_withSquareForPlayer1and2_returnsSetWithBothSquares() {
+    public void getDetectedSquares_withSquareForPlayer1and2_returnsSetWithBothSquares() {
         when(gameBoard.getPiece(1)).thenReturn(player1);
         when(gameBoard.getPiece(15)).thenReturn(player1);
         when(gameBoard.getPiece(48)).thenReturn(player1);
@@ -82,7 +82,7 @@ public class TestSquareCollector {
         squareCollector.detect(gameBoard, player1);
         squareCollector.detect(gameBoard, player2);
 
-        Set<Square> result = squareCollector.getSquares();
+        Set<Square> result = squareCollector.getDetectedSquares();
 
         assertEquals(2, result.size());
         assertTrue(result.contains(new Square(new int[]{1,15,48,62}, player1)));
