@@ -18,9 +18,13 @@ public class GameOverVerifier {
      * The game over state.
      */
     public enum GameOverState {
+        /** The game is not over. */
         NOT_OVER,
+        /** The game is over and player 1 won. */
         PLAYER1_WON,
+        /** The game is over and player 2 won. */
         PLAYER2_WON,
+        /** The game is over and the game is a draw. */
         GAME_DRAW
     }
 
@@ -124,6 +128,8 @@ public class GameOverVerifier {
                 if (hasPlayer1 && !hasPlayer2 && hasEmpty)
                     return true;
                 else if (hasPlayer2 && !hasPlayer1 && hasEmpty)
+                    return true;
+                else if (!hasPlayer1 && !hasPlayer2 && hasEmpty)
                     return true;
             }
         }
