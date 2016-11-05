@@ -4,9 +4,11 @@ import de.tbressler.quadratum.model.GameBoard;
 import de.tbressler.quadratum.model.Player;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -130,6 +132,30 @@ public class TestGameOverVerifier {
         when(squareCollector.getScoreForPlayer(player1)).thenReturn(30);
         when(squareCollector.getScoreForPlayer(player2)).thenReturn(60);
         assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer1ScoreGreaterAndNoMoreMovesPossible_returnsPLAYER1_WON() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(60);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(30);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player1);
+        assertEquals(PLAYER1_WON, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer2ScoreGreaterAndNoMoreMovesPossible_returnsPLAYER2_WON() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(30);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(60);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player1);
+        assertEquals(PLAYER2_WON, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenEqualScoreGreaterAndNoMoreMovesPossible_returnsGAME_DRAW() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(30);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(30);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player1);
+        assertEquals(GAME_DRAW, gameOverVerifier.isGameOver(gameBoard, squareCollector));
     }
 
 }
