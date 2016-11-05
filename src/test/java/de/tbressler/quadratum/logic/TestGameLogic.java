@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.*;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
@@ -44,10 +45,15 @@ public class TestGameLogic {
     public void setUp() {
         when(gameBoard.getPlayer1()).thenReturn(player1);
         when(gameBoard.getPlayer2()).thenReturn(player2);
+
         when(playerLogic1.getPlayer()).thenReturn(player1);
         when(playerLogic2.getPlayer()).thenReturn(player2);
+
+        when(gameOverVerifier.isGameOver(gameBoard, squareCollector)).thenReturn(NOT_OVER);
+
         gameLogic = new GameLogic(gameBoard, playerLogic1, playerLogic2);
         gameLogic.setSquareCollector(squareCollector);
+        gameLogic.setGameOverVerifier(gameOverVerifier);
         gameLogic.addGameLogicListener(listener);
     }
 
@@ -319,6 +325,62 @@ public class TestGameLogic {
         callback.getValue().makeMove(2, player2);
         assertEquals(player1, gameLogic.getActivePlayer());
         verify(gameBoard, times(1)).placePiece(2, player2);
+    }
+
+    @Test
+    public void startGame_withPlayer1MakesMoveAndPlayer1Won_notifiesListeners() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameOverVerifier.isGameOver(gameBoard, squareCollector)).thenReturn(PLAYER1_WON);
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player1);
+
+        verify(listener, times(1)).onGameOver(player1);
+        verify(listener, never()).onActivePlayerChanged(player2);
+        verify(playerLogic2, never()).requestMove(eq(gameBoard), callback.capture());
+    }
+
+    @Test
+    public void startGame_withPlayer1MakesMoveAndPlayer2Won_notifiesListeners() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameOverVerifier.isGameOver(gameBoard, squareCollector)).thenReturn(PLAYER2_WON);
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player1);
+
+        verify(listener, times(1)).onGameOver(player2);
+        verify(listener, never()).onActivePlayerChanged(player2);
+        verify(playerLogic2, never()).requestMove(eq(gameBoard), callback.capture());
+    }
+
+    @Test
+    public void startGame_withPlayer1MakesMoveAndGameDraw_notifiesListeners() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameOverVerifier.isGameOver(gameBoard, squareCollector)).thenReturn(GAME_DRAW);
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player1);
+
+        verify(listener, times(1)).onGameOver(null);
+        verify(listener, never()).onActivePlayerChanged(player2);
+        verify(playerLogic2, never()).requestMove(eq(gameBoard), callback.capture());
+    }
+
+    @Test
+    public void startGame_withPlayer1MakesMoveAndGameNotOver_doesNotNotifyListeners() {
+        gameLogic.startGame(player1);
+        verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
+        when(gameOverVerifier.isGameOver(gameBoard, squareCollector)).thenReturn(NOT_OVER);
+        when(gameBoard.isFieldEmpty(1)).thenReturn(true);
+
+        callback.getValue().makeMove(1, player1);
+
+        verify(listener, never()).onGameOver(null);
+        verify(listener, times(1)).onActivePlayerChanged(player2);
+        verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
     }
 
 
