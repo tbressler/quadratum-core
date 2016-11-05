@@ -2,15 +2,11 @@ package de.tbressler.quadratum.logic;
 
 import de.tbressler.quadratum.model.GameBoard;
 import de.tbressler.quadratum.model.Player;
-import de.tbressler.quadratum.model.Square;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.NOT_OVER;
-import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.PLAYER1_WON;
-import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.PLAYER2_WON;
+import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.*;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -99,6 +95,27 @@ public class TestGameOverVerifier {
         when(squareCollector.getScoreForPlayer(player1)).thenReturn(150);
         when(squareCollector.getScoreForPlayer(player2)).thenReturn(165);
         assertEquals(PLAYER2_WON, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer1Score0AndPlayer2Score0_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(0);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(0);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer1Score0AndPlayer2Score15_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(0);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(15);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer1Score15AndPlayer2Score0_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(15);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(0);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
     }
 
     @Test
