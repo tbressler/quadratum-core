@@ -46,6 +46,10 @@ public class GameLogic {
     /* The squares. */
     private SquareCollector squareCollector = new SquareCollector();
 
+    /* The game over verifier. */
+    private GameOverVerifier gameOverVerifier = new GameOverVerifier(150, 15);
+
+
     /* Callback for the player logic. */
     private ILogicCallback playerLogicCallback = new ILogicCallback() {
         @Override
@@ -105,10 +109,18 @@ public class GameLogic {
      *
      * @param squareCollector The square collector, must not be null.
      */
-    public void setSquareCollector(SquareCollector squareCollector) {
+    void setSquareCollector(SquareCollector squareCollector) {
         this.squareCollector = requireNonNull(squareCollector);
     }
 
+    /**
+     * Set the game over verifier. This method should only be used for testing purposes.
+     *
+     * @param gameOverVerifier The game over verifier, must not be null.
+     */
+    void setGameOverVerifier(GameOverVerifier gameOverVerifier) {
+        this.gameOverVerifier = requireNonNull(gameOverVerifier);
+    }
 
     /* Checks the game board for new squares. */
     private void checkGameBoardForSquares(Player player) {
@@ -127,34 +139,28 @@ public class GameLogic {
 
     /* Returns true if the game is over, otherwise false. */
     private boolean checkIfGameIsOver() {
-//        int scorePlayer1 = squareCollector.getScoreForPlayer(player1);
-//        int scorePlayer2 = squareCollector.getScoreForPlayer(player2);
-//
-//        // Check if one player has won the game
-//        if ((scorePlayer1 >= MIN_SCORE) || (scorePlayer2 >= MIN_SCORE)) {
-//
-//            int dif = scorePlayer1 - scorePlayer2;
-//
-//            if (dif >= MIN_DIFFERENCE) {
-//                fireGameDraw(player1);
-//                return true;
-//            } else if (dif <= -MIN_DIFFERENCE) {
-//                fireGameDraw(player2);
-//                return true;
-//            }
-//        }
-//
-//        if (!canPlayersDoMoreSquares()) {
-//            if (scorePlayer1 > scorePlayer2)
-//                fireGameDraw(player1);
-//            else if (scorePlayer2 > scorePlayer1)
-//                fireGameDraw(player2);
-//            else
-//                fireGameDraw(null);
-//        }
-        return false;
+        switch(gameOverVerifier.isGameOver(gameBoard, squareCollector)) {
+            case NOT_OVER:
+                return false;
+            case PLAYER1_WON:
+                fireOnGameOver(player1);
+                return true;
+            case PLAYER2_WON:
+                fireOnGameOver(player2);
+                return true;
+            case GAME_DRAW:
+                fireOnGameOver(null);
+                return true;
+            default:
+                throw new IllegalStateException("Unknown state!");
+        }
     }
 
+    /* Notifies listeners that game is over and given player won. */
+    private void fireOnGameOver(Player player) {
+        for(IGameLogicListener listener : listeners)
+            listener.onGameOver(player);
+    }
 
     /**
      * Starts the game. Clears the game board if a game was started before.

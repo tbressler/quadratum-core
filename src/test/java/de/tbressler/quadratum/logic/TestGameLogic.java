@@ -34,9 +34,10 @@ public class TestGameLogic {
 
     private SquareCollector squareCollector = mock(SquareCollector.class, "squareCollector");
 
+    private GameOverVerifier gameOverVerifier = mock(GameOverVerifier.class, "gameOverVerifier");
+
     // Capture:
     private ArgumentCaptor<ILogicCallback> callback = forClass(ILogicCallback.class);
-
 
 
     @Before
@@ -107,6 +108,11 @@ public class TestGameLogic {
     @Test(expected = NullPointerException.class)
     public void setSquareCollector_withNull_throwsException() {
         gameLogic.setSquareCollector(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void setGameOverVerifier_withNull_throwsException() {
+        gameLogic.setGameOverVerifier(null);
     }
 
 
@@ -373,44 +379,6 @@ public class TestGameLogic {
         gameLogic.startGame(player2);
         assertEquals(playerLogic2, gameLogic.getActivePlayerLogic());
     }
-
-// --------------------
-//
-//    /**
-//     * Checks if startGame() clears the game board.
-//     */
-//    @Test
-//    public void startGame_clearsGameBoard() {
-//        // Start the game board and place pieces:
-//        gameBoard.startGame(player1);
-//        gameBoard.placePiece(1, player1);
-//        gameBoard.placePiece(5, player2);
-//
-//        // (Re)start the game:
-//        gameBoard.startGame(player1);
-//
-//        // Check if the game board is empty:
-//        for(int i = 0; i < 64; i++)
-//            assertEquals(true, gameBoard.isFieldEmpty(i));
-//    }
-//
-//    /**
-//     * Checks if an exception is thrown if the given player is not the active player.
-//     */
-//    @Test(expected = AssertionError.class)
-//    public void placePiece_withInactivePlayer_throwsException() {
-//        gameBoard.placePiece(0, player2);
-//    }
-//
-//    /**
-//     * Checks if an exception is thrown if game is not started yet.
-//     */
-//    @Test(expected = AssertionError.class)
-//    public void placePiece_ifGameIsNotStarted_throwsException() {
-//        gameBoard.placePiece(0, player1);
-//    }
-//
-// --------------------
 
 
     @Test

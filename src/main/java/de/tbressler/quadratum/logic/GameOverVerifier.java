@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 public class GameOverVerifier {
 
     /** The game over state. */
-    public enum GameOverState {
+    enum GameOverState {
         /** The game is not over. */
         NOT_OVER,
         /** The game is over and player 1 won. */
@@ -29,7 +29,7 @@ public class GameOverVerifier {
     }
 
     /** Possible moves. */
-    protected enum PossibleMoves {
+    enum PossibleMoves {
         /** Both players can do squares. */
         BOTH_PLAYERS,
         /** Only player 1 can do more squares. */
@@ -164,6 +164,7 @@ public class GameOverVerifier {
             }
         }
 
+        // Check if player 1 or 2 can do more squares:
         if (player1CanDoMoreSquares)
             return ONLY_PLAYER1;
         else if (player2CanDoMoreSquares)
