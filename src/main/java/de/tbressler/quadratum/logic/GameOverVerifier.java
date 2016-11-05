@@ -4,6 +4,7 @@ import de.tbressler.quadratum.model.IReadOnlyGameBoard;
 import de.tbressler.quadratum.model.Player;
 
 import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.*;
+import static de.tbressler.quadratum.logic.GameOverVerifier.PossibleMoves.*;
 import static de.tbressler.quadratum.utils.SquareUtils.getPossiblePieces;
 import static java.util.Objects.requireNonNull;
 
@@ -28,6 +29,12 @@ public class GameOverVerifier {
         GAME_DRAW
     }
 
+    protected enum PossibleMoves {
+        BOTH_PLAYERS,
+        ONLY_PLAYER1,
+        ONLY_PLAYER2,
+        NO_PLAYER
+    }
 
     /* The minimum score for a player to win the game. */
     private final int minScore;
@@ -54,11 +61,14 @@ public class GameOverVerifier {
      *
      * @param gameBoard The game board, must not be null.
      * @param squareCollector The current squares, must not be null.
+     * @param nextPlayer The next player, must not be null.
      * @return The game over state, never null.
      */
-    public GameOverState isGameOver(IReadOnlyGameBoard gameBoard, SquareCollector squareCollector) {
+    public GameOverState isGameOver(IReadOnlyGameBoard gameBoard, SquareCollector
+            squareCollector, Player nextPlayer) {
         requireNonNull(gameBoard);
         requireNonNull(squareCollector);
+        requireNonNull(nextPlayer);
 
         int scorePlayer1 = squareCollector.getScoreForPlayer(gameBoard.getPlayer1());
         int scorePlayer2 = squareCollector.getScoreForPlayer(gameBoard.getPlayer2());
@@ -75,20 +85,33 @@ public class GameOverVerifier {
             }
         }
 
-        if (!canPlayersDoMoreSquares(gameBoard)) {
-            if (scorePlayer1 > scorePlayer2)
-                return PLAYER1_WON;
-            else if (scorePlayer2 > scorePlayer1)
-                return PLAYER2_WON;
-            else
-                return GAME_DRAW;
+        // Check if more moves are possible:
+        switch (canPlayersDoMoreSquares(gameBoard)) {
+            case NO_PLAYER:
+                return getGameDrawState(scorePlayer1, scorePlayer2);
+            case ONLY_PLAYER1:
+                return (nextPlayer.equals(gameBoard.getPlayer1())) ?
+                        NOT_OVER : getGameDrawState(scorePlayer1, scorePlayer2);
+            case ONLY_PLAYER2:
+                return (nextPlayer.equals(gameBoard.getPlayer2())) ?
+                        NOT_OVER : getGameDrawState(scorePlayer1, scorePlayer2);
+            case BOTH_PLAYERS:
+                return NOT_OVER;
+            default:
+                throw new AssertionError("Unknown return value!");
         }
-
-        return NOT_OVER;
     }
 
-    /* Returns true, if the players can do more squares. */
-    private boolean canPlayersDoMoreSquares(IReadOnlyGameBoard gameBoard) {
+    private GameOverState getGameDrawState(int scorePlayer1, int scorePlayer2) {
+        if (scorePlayer1 > scorePlayer2)
+            return PLAYER1_WON;
+        else if (scorePlayer2 > scorePlayer1)
+            return PLAYER2_WON;
+        else
+            return GAME_DRAW;
+    }
+
+    private PossibleMoves canPlayersDoMoreSquares(IReadOnlyGameBoard gameBoard) {
         Player player1 = gameBoard.getPlayer1();
 
         int[] possible;
@@ -97,6 +120,9 @@ public class GameOverVerifier {
         boolean hasPlayer1;
         boolean hasPlayer2;
         boolean hasEmpty;
+
+        boolean player1CanMove = false;
+        boolean player2CanMove = false;
 
         for (int i = 0; i < 55; i++) {
 
@@ -126,15 +152,23 @@ public class GameOverVerifier {
                         hasPlayer2 = true;
 
                 if (hasPlayer1 && !hasPlayer2 && hasEmpty)
-                    return true;
+                    player1CanMove = true;
                 else if (hasPlayer2 && !hasPlayer1 && hasEmpty)
-                    return true;
+                    player2CanMove = true;
                 else if (!hasPlayer1 && !hasPlayer2 && hasEmpty)
-                    return true;
+                    return BOTH_PLAYERS;
+
+                if (player1CanMove && player2CanMove)
+                    return BOTH_PLAYERS;
             }
         }
 
-        return false;
+        if (player1CanMove)
+            return ONLY_PLAYER1;
+        else if (player2CanMove)
+            return ONLY_PLAYER2;
+
+        return NO_PLAYER;
     }
 
 }
