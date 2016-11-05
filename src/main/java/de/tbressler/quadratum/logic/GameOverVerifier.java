@@ -87,16 +87,14 @@ public class GameOverVerifier {
 
         // Check if more moves are possible:
         switch (canPlayersDoMoreSquares(gameBoard)) {
+            case BOTH_PLAYERS:
+                return NOT_OVER;
             case NO_PLAYER:
                 return getGameDrawState(scorePlayer1, scorePlayer2);
             case ONLY_PLAYER1:
-                return (nextPlayer.equals(gameBoard.getPlayer1())) ?
-                        NOT_OVER : getGameDrawState(scorePlayer1, scorePlayer2);
+                return (scorePlayer1 > scorePlayer2) ? PLAYER1_WON : NOT_OVER;
             case ONLY_PLAYER2:
-                return (nextPlayer.equals(gameBoard.getPlayer2())) ?
-                        NOT_OVER : getGameDrawState(scorePlayer1, scorePlayer2);
-            case BOTH_PLAYERS:
-                return NOT_OVER;
+                return (scorePlayer2 > scorePlayer1) ? PLAYER2_WON : NOT_OVER;
             default:
                 throw new AssertionError("Unknown return value!");
         }
@@ -121,8 +119,8 @@ public class GameOverVerifier {
         boolean hasPlayer2;
         boolean hasEmpty;
 
-        boolean player1CanMove = false;
-        boolean player2CanMove = false;
+        boolean player1CanDoMoreSquares = false;
+        boolean player2CanDoMoreSquares = false;
 
         for (int i = 0; i < 55; i++) {
 
@@ -152,20 +150,20 @@ public class GameOverVerifier {
                         hasPlayer2 = true;
 
                 if (hasPlayer1 && !hasPlayer2 && hasEmpty)
-                    player1CanMove = true;
+                    player1CanDoMoreSquares = true;
                 else if (hasPlayer2 && !hasPlayer1 && hasEmpty)
-                    player2CanMove = true;
+                    player2CanDoMoreSquares = true;
                 else if (!hasPlayer1 && !hasPlayer2 && hasEmpty)
                     return BOTH_PLAYERS;
 
-                if (player1CanMove && player2CanMove)
+                if (player1CanDoMoreSquares && player2CanDoMoreSquares)
                     return BOTH_PLAYERS;
             }
         }
 
-        if (player1CanMove)
+        if (player1CanDoMoreSquares)
             return ONLY_PLAYER1;
-        else if (player2CanMove)
+        else if (player2CanDoMoreSquares)
             return ONLY_PLAYER2;
 
         return NO_PLAYER;

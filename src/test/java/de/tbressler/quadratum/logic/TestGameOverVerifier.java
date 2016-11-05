@@ -4,7 +4,6 @@ import de.tbressler.quadratum.model.GameBoard;
 import de.tbressler.quadratum.model.Player;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static de.tbressler.quadratum.logic.GameOverVerifier.GameOverState.*;
 import static org.junit.Assert.assertEquals;
