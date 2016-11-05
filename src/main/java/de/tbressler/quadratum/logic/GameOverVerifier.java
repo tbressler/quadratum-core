@@ -9,6 +9,7 @@ import static de.tbressler.quadratum.utils.SquareUtils.getPossiblePieces;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Verifier which checks the game over.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -49,12 +50,12 @@ public class GameOverVerifier {
     /**
      * Creates the game over verifier.
      *
-     * @param minScore The minimum score to win (suggested 150).
-     * @param minDifference The minimum difference between score (suggested 15).
+     * @param minScore The minimum score to win, must be > 0 (suggested 150).
+     * @param minDifference The minimum difference between score, must be > 0 (suggested 15).
      */
     public GameOverVerifier(int minScore, int minDifference) {
-        if (minScore < 1) throw new AssertionError("minScore must be greater than 0!");
-        if (minDifference < 1) throw new AssertionError("minDifference must be greater than 0!");
+        if (minScore < 1) throw new AssertionError("minScore must be > 0!");
+        if (minDifference < 1) throw new AssertionError("minDifference must be > 0!");
         this.minScore = minScore;
         this.minDifference = minDifference;
     }
