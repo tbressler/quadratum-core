@@ -15,9 +15,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class GameOverVerifier {
 
-    /**
-     * The game over state.
-     */
+    /** The game over state. */
     public enum GameOverState {
         /** The game is not over. */
         NOT_OVER,
@@ -29,10 +27,15 @@ public class GameOverVerifier {
         GAME_DRAW
     }
 
+    /** Possible moves. */
     protected enum PossibleMoves {
+        /** Both players can do squares. */
         BOTH_PLAYERS,
+        /** Only player 1 can do more squares. */
         ONLY_PLAYER1,
+        /** Only player 2 can do more squares. */
         ONLY_PLAYER2,
+        /** No player can do more squares. */
         NO_PLAYER
     }
 
@@ -61,14 +64,11 @@ public class GameOverVerifier {
      *
      * @param gameBoard The game board, must not be null.
      * @param squareCollector The current squares, must not be null.
-     * @param nextPlayer The next player, must not be null.
      * @return The game over state, never null.
      */
-    public GameOverState isGameOver(IReadOnlyGameBoard gameBoard, SquareCollector
-            squareCollector, Player nextPlayer) {
+    public GameOverState isGameOver(IReadOnlyGameBoard gameBoard, SquareCollector squareCollector) {
         requireNonNull(gameBoard);
         requireNonNull(squareCollector);
-        requireNonNull(nextPlayer);
 
         int scorePlayer1 = squareCollector.getScoreForPlayer(gameBoard.getPlayer1());
         int scorePlayer2 = squareCollector.getScoreForPlayer(gameBoard.getPlayer2());
@@ -100,6 +100,7 @@ public class GameOverVerifier {
         }
     }
 
+    /* Returns the game draw state. */
     private GameOverState getGameDrawState(int scorePlayer1, int scorePlayer2) {
         if (scorePlayer1 > scorePlayer2)
             return PLAYER1_WON;
@@ -109,6 +110,7 @@ public class GameOverVerifier {
             return GAME_DRAW;
     }
 
+    /* Checks if the players can do more squares on the game board. */
     private PossibleMoves canPlayersDoMoreSquares(IReadOnlyGameBoard gameBoard) {
         Player player1 = gameBoard.getPlayer1();
 
