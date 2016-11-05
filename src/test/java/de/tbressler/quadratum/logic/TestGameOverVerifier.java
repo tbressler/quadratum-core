@@ -157,4 +157,58 @@ public class TestGameOverVerifier {
         assertEquals(GAME_DRAW, gameOverVerifier.isGameOver(gameBoard, squareCollector));
     }
 
+    @Test
+    public void isGameOver_whenPlayer1LeadsAndCanDoMoreSquares_returnsPLAYER1_WON() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(60);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(30);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player1);
+        when(gameBoard.getPiece(10)).thenReturn(null);
+        assertEquals(PLAYER1_WON, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer1LagBehindButCanDoMoreSquares_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(30);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(60);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player1);
+        when(gameBoard.getPiece(10)).thenReturn(null);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer2LeadsAndCanDoMoreSquares_returnsPLAYER2_WON() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(30);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(60);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player2);
+        when(gameBoard.getPiece(10)).thenReturn(null);
+        assertEquals(PLAYER2_WON, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenPlayer2LagBehindButCanDoMoreSquares_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(60);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(30);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player2);
+        when(gameBoard.getPiece(10)).thenReturn(null);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenScoreIsDrawAndPlayer1CanDoMoreSquares_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(60);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(60);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player1);
+        when(gameBoard.getPiece(10)).thenReturn(null);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
+    @Test
+    public void isGameOver_whenScoreIsDrawAndPlayer2CanDoMoreSquares_returnsNOT_OVER() {
+        when(squareCollector.getScoreForPlayer(player1)).thenReturn(60);
+        when(squareCollector.getScoreForPlayer(player2)).thenReturn(60);
+        when(gameBoard.getPiece(anyInt())).thenReturn(player2);
+        when(gameBoard.getPiece(10)).thenReturn(null);
+        assertEquals(NOT_OVER, gameOverVerifier.isGameOver(gameBoard, squareCollector));
+    }
+
 }
