@@ -1,8 +1,5 @@
 package de.tbressler.quadratum.model;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.MoreObjects;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

@@ -8,7 +8,7 @@ import de.tbressler.quadratum.model.Player;
  * @author Tobias Bressler
  * @version 1.0
  */
-interface ILogicCallback {
+public interface ILogicCallback {
 
     /**
      * Make the move on the game board.

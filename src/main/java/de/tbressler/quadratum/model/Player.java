@@ -1,7 +1,5 @@
 package de.tbressler.quadratum.model;
 
-import com.google.common.base.MoreObjects;
-
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
