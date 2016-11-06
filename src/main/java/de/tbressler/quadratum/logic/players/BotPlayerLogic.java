@@ -7,6 +7,7 @@ import de.tbressler.quadratum.model.Player;
 import java.util.Random;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.collect.Range.closed;
 import static de.tbressler.quadratum.utils.SquareUtils.getPossiblePieces;
 import static de.tbressler.quadratum.utils.SquareUtils.score;
 import static java.util.Objects.requireNonNull;
@@ -117,6 +118,39 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
                 }
             }
         }
+
+        int value;
+        int maxValue = -1;
+        int indexWithMaxValue = -1;
+
+        // Analyze heat map:
+        for(int i = 0; i < 64; i++) {
+
+            // Skip if field is not empty.
+            if (!gameBoard.isFieldEmpty(i))
+                continue;
+
+            // Check chances to score:
+            if (playerHeatMap[i] >= opponentHeatMap[i]) {
+                // ... the chance for a player score is higher or equal.
+                value = playerHeatMap[i];
+            } else {
+                // ... the chance for a opponent score is higher.
+                value = opponentHeatMap[i];
+            }
+
+            // Check if chance is higher:
+            if ((value > maxValue) ||
+                    ((value == maxValue) && randomizeMoves && random.nextBoolean())) {
+                maxValue = value;
+                indexWithMaxValue = i;
+            }
+        }
+
+        if (!closed(0, 63).contains(indexWithMaxValue))
+            throw new IllegalStateException("Bot logic error! Invalid field index.");
+
+        callback.makeMove(indexWithMaxValue, getPlayer());
     }
 
 
