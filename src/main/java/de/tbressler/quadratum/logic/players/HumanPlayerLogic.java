@@ -6,7 +6,7 @@ import de.tbressler.quadratum.model.Player;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.google.common.collect.Range.closed;
+import static de.tbressler.quadratum.utils.GameBoardUtils.assertIndex;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -22,9 +22,6 @@ public class HumanPlayerLogic extends AbstractPlayerLogic {
 
     /* Lock. */
     private ReentrantLock lock = new ReentrantLock(true);
-
-    /* The game board. */
-    private IReadOnlyGameBoard gameBoard = null;
 
     /* The logic callback. */
     private ILogicCallback logicCallback = null;
@@ -44,7 +41,6 @@ public class HumanPlayerLogic extends AbstractPlayerLogic {
         try {
             lock.lock();
 
-            this.gameBoard = requireNonNull(gameBoard);
             this.logicCallback = requireNonNull(callback);
 
             isPlayerActive = true;
@@ -72,8 +68,7 @@ public class HumanPlayerLogic extends AbstractPlayerLogic {
      * @return True if the piece was placed successfully.
      */
     public boolean placePiece(int index) {
-        if (!closed(0, 63).contains(index))
-            throw new AssertionError("Index must be between 0 and 63!");
+        assertIndex(index, "Index must be between 0 and 63!");
 
         try {
             lock.lock();

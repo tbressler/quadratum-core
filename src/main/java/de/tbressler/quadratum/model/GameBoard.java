@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
-import static com.google.common.collect.Range.closed;
+import static de.tbressler.quadratum.utils.GameBoardUtils.assertIndex;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -107,8 +107,7 @@ public class GameBoard implements IReadOnlyGameBoard {
 
     /* Checks if index is in range. */
     private void checkFieldIndex(int index) {
-        if (!closed(0, 63).contains(index))
-            throw new AssertionError("Index must be between 0 and 63!");
+        assertIndex(index, "Index must be between 0 and 63!");
     }
 
 

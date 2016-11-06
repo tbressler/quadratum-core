@@ -110,11 +110,6 @@ public class TestHumanPlayerLogic {
 
 
     @Test(expected = NullPointerException.class)
-    public void requestMove_withNullGameBoard_throwsException() {
-        humanPlayerLogic.requestMove(null, logicCallback);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void requestMove_withNullLogicCallback_throwsException() {
         humanPlayerLogic.requestMove(gameBoard, null);
     }

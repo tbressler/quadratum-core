@@ -33,7 +33,7 @@ public class GameBoardUtils {
      * @return The corresponding x and y coordinates in the form {x, y}.
      */
     public static int[] toCoords(int index) {
-        if ((index < 0) || (index > 63)) throw new AssertionError("index must be between 0..63!");
+        assertIndex(index, "index must be between 0..63!");
         return new int[]{(index % 8), (index - (index % 8)) / 8};
     }
 
@@ -45,8 +45,8 @@ public class GameBoardUtils {
      * @return The difference of the x coordinates, between 0..7.
      */
     public static int difX(int index1, int index2) {
-        if ((index1 < 0) || (index1 > 63)) throw new AssertionError("index1 must be between 0..63!");
-        if ((index2 < 0) || (index2 > 63)) throw new AssertionError("index2 must be between 0..63!");
+        assertIndex(index1, "index1 must be between 0..63!");
+        assertIndex(index2, "index2 must be between 0..63!");
         int[] c1 = toCoords(index1);
         int[] c2 = toCoords(index2);
         return c2[0] - c1[0];
@@ -60,11 +60,21 @@ public class GameBoardUtils {
      * @return The difference of the x coordinates, between 0..7.
      */
     public static int difY(int index1, int index2) {
-        if ((index1 < 0) || (index1 > 63)) throw new AssertionError("index1 must be between 0..63!");
-        if ((index2 < 0) || (index2 > 63)) throw new AssertionError("index2 must be between 0..63!");
+        assertIndex(index1, "index1 must be between 0..63!");
+        assertIndex(index2, "index2 must be between 0..63!");
         int[] c1 = toCoords(index1);
         int[] c2 = toCoords(index2);
         return c2[1] - c1[1];
+    }
+
+    /**
+     * Asserts if index is between 0 and 63.
+     *
+     * @param index The index.
+     * @param msg The error message.
+     */
+    public static void assertIndex(int index, String msg) {
+        if ((index < 0) || (index > 63)) throw new AssertionError(msg);
     }
 
 }

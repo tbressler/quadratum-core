@@ -7,7 +7,7 @@ import de.tbressler.quadratum.model.Player;
 import java.util.Random;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
-import static com.google.common.collect.Range.closed;
+import static de.tbressler.quadratum.utils.GameBoardUtils.assertIndex;
 import static de.tbressler.quadratum.utils.SquareUtils.getPossiblePieces;
 import static de.tbressler.quadratum.utils.SquareUtils.score;
 import static java.util.Objects.requireNonNull;
@@ -147,8 +147,7 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
             }
         }
 
-        if (!closed(0, 63).contains(indexWithMaxValue))
-            throw new IllegalStateException("Bot logic error! Invalid field index.");
+        assertIndex(indexWithMaxValue, "Bot logic error! Invalid field index.");
 
         callback.makeMove(indexWithMaxValue, getPlayer());
     }
