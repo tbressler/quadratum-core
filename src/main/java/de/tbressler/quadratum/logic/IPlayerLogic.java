@@ -19,7 +19,7 @@ public interface IPlayerLogic {
     Player getPlayer();
 
     /**
-     * Requests a move at the player logic.
+     * Requests a move at the player logic. The move must be executed via the callback.
      *
      * @param gameBoard The game board (read-only), never null.
      * @param callback The callback of the game logic, never null.

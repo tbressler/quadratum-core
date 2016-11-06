@@ -1,8 +1,7 @@
 package de.tbressler.quadratum.model;
 
 /**
- * Interface for game board. This interface is used for readonly-access
- * to the game board.
+ * Interface for the game board. This interface is used for readonly-access to the game board.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -27,7 +26,7 @@ public interface IReadOnlyGameBoard {
      * Returns true if the field is empty. Otherwise this method returns false.
      *
      * @param index The field index, between 0 and 63.
-     * @return true if the field is empty or false.
+     * @return True if the field is empty or false.
      */
     boolean isFieldEmpty(int index);
 
@@ -43,14 +42,14 @@ public interface IReadOnlyGameBoard {
     /**
      * Adds a listener to the game board.
      *
-     * @param listener the listener, must not be null.
+     * @param listener The listener, must not be null.
      */
     void addGameBoardListener(IGameBoardListener listener);
 
     /**
      * Removes a listener from the game board.
      *
-     * @param listener the listener, must not be null.
+     * @param listener The listener, must not be null.
      */
     void removeGameBoardListener(IGameBoardListener listener);
 

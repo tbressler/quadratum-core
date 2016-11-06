@@ -12,7 +12,7 @@ import static java.util.Collections.emptySet;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Detects and manages squares on a game board.
+ * Detects and manages squares on the game board.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -21,12 +21,6 @@ public class SquareCollector {
 
     /* A set of squares found by this detector. */
     private final Set<Square> squares = new HashSet<>();
-
-
-    /**
-     * Creates the square detector.
-     */
-    public SquareCollector() {}
 
 
     /**

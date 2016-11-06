@@ -14,9 +14,10 @@ import java.util.Set;
 public interface IGameLogicListener {
 
     /**
-     * Method is called when the game is over.
+     * Method is called when the game is over. The given parameter winner indicates which player
+     * won the game. If the parameter is null, the game is a draw.
      *
-     * @param winner The winner of the game or null.
+     * @param winner The winner of the game or null if the game is a draw.
      */
     void onGameOver(Player winner);
 

@@ -1,5 +1,8 @@
 package de.tbressler.quadratum.model;
 
+import com.google.common.base.MoreObjects;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -23,6 +26,7 @@ public class Player {
         this.name = requireNonNull(name);
     }
 
+
     /**
      * Returns the name of the player.
      *
@@ -30,6 +34,14 @@ public class Player {
      */
     public String getName() {
         return name;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("name", name)
+                .toString();
     }
 
 }

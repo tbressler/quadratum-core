@@ -1,9 +1,13 @@
 package de.tbressler.quadratum.model;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
 import de.tbressler.quadratum.utils.SquareUtils;
 
 import java.util.Arrays;
 
+import static com.google.common.base.Joiner.on;
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static de.tbressler.quadratum.utils.SquareUtils.score;
 import static java.util.Arrays.sort;
 import static java.util.Objects.requireNonNull;
@@ -45,6 +49,7 @@ public class Square {
         this.player = requireNonNull(player);
     }
 
+
     /**
      * Returns the field indexes of the pieces as a sorted array.
      *
@@ -53,6 +58,7 @@ public class Square {
     public int[] getSortedPieces() {
         return pieces;
     }
+
 
     /**
      * Returns the score of the square.
@@ -63,6 +69,7 @@ public class Square {
         return score;
     }
 
+
     /**
      * Returns the player who scored the square.
      *
@@ -71,6 +78,7 @@ public class Square {
     public Player getPlayer() {
         return player;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -89,6 +97,16 @@ public class Square {
         int result = Arrays.hashCode(pieces);
         result = 31 * result + player.hashCode();
         return result;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("player", player)
+                .add("pieces", on(",").join(pieces[0],pieces[1],pieces[2],pieces[3]))
+                .add("score", score)
+                .toString();
     }
 
 }

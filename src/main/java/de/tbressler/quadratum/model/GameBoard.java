@@ -1,9 +1,13 @@
 package de.tbressler.quadratum.model;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.collect.Range.closed;
 import static java.util.Objects.requireNonNull;
 
@@ -128,6 +132,15 @@ public class GameBoard implements IReadOnlyGameBoard {
     @Override
     public void removeGameBoardListener(IGameBoardListener listener) {
         listeners.remove(requireNonNull(listener));
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("player1", player1)
+                .add("player2", player2)
+                .toString();
     }
 
 }

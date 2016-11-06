@@ -9,7 +9,7 @@ import static de.tbressler.quadratum.utils.SquareUtils.getPossiblePieces;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Verifier which checks the game over.
+ * This class is used by the game logic in order to check, if the game is over and who won the game.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -74,7 +74,7 @@ public class GameOverVerifier {
         int scorePlayer1 = squareCollector.getScoreForPlayer(gameBoard.getPlayer1());
         int scorePlayer2 = squareCollector.getScoreForPlayer(gameBoard.getPlayer2());
 
-        // Check if one player has won the game
+        // Check if one player has won the game:
         if ((scorePlayer1 >= minScore) || (scorePlayer2 >= minScore)) {
 
             int dif = scorePlayer1 - scorePlayer2;
@@ -86,7 +86,7 @@ public class GameOverVerifier {
             }
         }
 
-        // Check if more moves are possible:
+        // Check if more squares are possible:
         switch (canPlayersDoMoreSquares(gameBoard)) {
             case BOTH_PLAYERS:
                 return NOT_OVER;
@@ -97,7 +97,7 @@ public class GameOverVerifier {
             case ONLY_PLAYER2:
                 return (scorePlayer2 > scorePlayer1) ? PLAYER2_WON : NOT_OVER;
             default:
-                throw new AssertionError("Unknown return value!");
+                throw new IllegalStateException("Unknown state!");
         }
     }
 
@@ -107,8 +107,7 @@ public class GameOverVerifier {
             return PLAYER1_WON;
         else if (scorePlayer2 > scorePlayer1)
             return PLAYER2_WON;
-        else
-            return GAME_DRAW;
+        return GAME_DRAW;
     }
 
     /* Checks if the players can do more squares on the game board. */
@@ -125,6 +124,7 @@ public class GameOverVerifier {
         boolean player1CanDoMoreSquares = false;
         boolean player2CanDoMoreSquares = false;
 
+        // Go through the game board and check for possible squares:
         for (int i = 0; i < 55; i++) {
 
             pieces[0] = gameBoard.getPiece(i);
