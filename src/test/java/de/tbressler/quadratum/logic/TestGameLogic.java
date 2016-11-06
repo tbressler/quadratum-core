@@ -301,6 +301,9 @@ public class TestGameLogic {
         callback.getValue().makeMove(1, player2);
     }
 
+    /**
+     * Checks if callback throws an exception if makeMove() is called with an index < 0.
+     */
     @Test(expected = AssertionError.class)
     public void startGame_withPlayerLogic1MakesInvalidMoveWithIndexLowerThan0_throwsException() {
         gameLogic.startGame(player1);
@@ -309,6 +312,9 @@ public class TestGameLogic {
         callback.getValue().makeMove(-1, player1);
     }
 
+    /**
+     * Checks if callback throws an exception if makeMove() is called with an index > 63.
+     */
     @Test(expected = AssertionError.class)
     public void startGame_withPlayerLogic1MakesInvalidMoveWithIndexGreaterThan63_throwsException() {
         gameLogic.startGame(player1);
@@ -317,6 +323,9 @@ public class TestGameLogic {
         callback.getValue().makeMove(64, player1);
     }
 
+    /**
+     * Checks if startGame() places a piece on the game board when player logic makes a move.
+     */
     @Test
     public void startGame_withPlayerLogic2MakesValidMove_placesPieceOnGameBoard() {
         gameLogic.startGame(player2);
@@ -327,6 +336,10 @@ public class TestGameLogic {
         verify(gameBoard, times(1)).placePiece(1, player2);
     }
 
+    /**
+     * Checks if startGame() doesn't place a piece on the game board if the field is not empty.
+     * In this case makeMove() from the callback must return false.
+     */
     @Test(expected = AssertionError.class)
     public void startGame_withPlayerLogic2MakesInvalidMoveWithInvalidPlayer_throwsException() {
         gameLogic.startGame(player2);
@@ -335,6 +348,9 @@ public class TestGameLogic {
         callback.getValue().makeMove(1, player1);
     }
 
+    /**
+     * Checks if active player gets switched after a valid move with player 1.
+     */
     @Test
     public void startGame_withPlayerLogic1MakesValidMove_switchesActivePlayer() {
         gameLogic.startGame(player1);
@@ -347,6 +363,9 @@ public class TestGameLogic {
         verify(playerLogic2, times(1)).requestMove(eq(gameBoard), callback.capture());
     }
 
+    /**
+     * Checks if active player gets switched after a valid move with player 2.
+     */
     @Test
     public void startGame_withPlayerLogic2MakesValidMove_switchesActivePlayer() {
         gameLogic.startGame(player2);
@@ -359,7 +378,9 @@ public class TestGameLogic {
         verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
     }
 
-
+    /**
+     * Checks if active player gets switched after multiple moves.
+     */
     @Test
     public void startGame_withValidMovesAndPlayerSwitches() {
         gameLogic.startGame(player1);
@@ -378,6 +399,9 @@ public class TestGameLogic {
         verify(gameBoard, times(1)).placePiece(2, player2);
     }
 
+    /**
+     * Checks if listeners get notified when player 1 won after his move.
+     */
     @Test
     public void startGame_withPlayer1MakesMoveAndPlayer1Won_notifiesListeners() {
         gameLogic.startGame(player1);
@@ -392,6 +416,9 @@ public class TestGameLogic {
         verify(playerLogic2, never()).requestMove(eq(gameBoard), callback.capture());
     }
 
+    /**
+     * Checks if listeners get notified when player 2 won after his move.
+     */
     @Test
     public void startGame_withPlayer1MakesMoveAndPlayer2Won_notifiesListeners() {
         gameLogic.startGame(player1);
@@ -406,6 +433,9 @@ public class TestGameLogic {
         verify(playerLogic2, never()).requestMove(eq(gameBoard), callback.capture());
     }
 
+    /**
+     * Checks if listeners get notified when game is a draw after a move.
+     */
     @Test
     public void startGame_withPlayer1MakesMoveAndGameDraw_notifiesListeners() {
         gameLogic.startGame(player1);
@@ -420,6 +450,9 @@ public class TestGameLogic {
         verify(playerLogic2, never()).requestMove(eq(gameBoard), callback.capture());
     }
 
+    /**
+     * Checks if listeners doesn't get notified when game is not over after a move.
+     */
     @Test
     public void startGame_withPlayer1MakesMoveAndGameNotOver_doesNotNotifyListeners() {
         gameLogic.startGame(player1);
@@ -494,23 +527,35 @@ public class TestGameLogic {
     }
 
 
+    /**
+     * Checks if getGameBoard() returns the game board.
+     */
     @Test
     public void getGameBoard_returnsGameBoard() {
         assertEquals(gameBoard, gameLogic.getGameBoard());
     }
 
 
+    /**
+     * Checks if getSquares() returns an empty set after construction.
+     */
     @Test
-    public void getSquares_returnsEmptySet() {
+    public void getSquares_afterNew_returnsEmptySet() {
         assertEquals(0, gameLogic.getSquares().size());
     }
 
 
+    /**
+     * Checks if an exception is thrown if listener is null.
+     */
     @Test(expected = NullPointerException.class)
     public void addGameLogicListener_withNull_throwsException() {
         gameLogic.addGameLogicListener(null);
     }
 
+    /**
+     * Checks if an exception is thrown if listener is null.
+     */
     @Test(expected = NullPointerException.class)
     public void removeGameLogicListener_withNull_throwsException() {
         gameLogic.removeGameLogicListener(null);
