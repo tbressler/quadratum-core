@@ -6,6 +6,8 @@ import de.tbressler.quadratum.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.mockito.Mockito.mock;
 
 /**
@@ -27,11 +29,14 @@ public class TestBotPlayerLogic {
 
     private IReadOnlyGameBoard gameBoard = mock(IReadOnlyGameBoard.class, "gameBoard");
 
+    private Random random = mock(Random.class, "random");
+
 
 
     @Before
     public void setUp() {
         botPlayerLogic = new BotPlayerLogic(player);
+        botPlayerLogic.setRandom(random);
     }
 
 
