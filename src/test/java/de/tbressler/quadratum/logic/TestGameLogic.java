@@ -22,6 +22,7 @@ public class TestGameLogic {
     // Class under test:
     private GameLogic gameLogic;
 
+
     // Mocks:
     private Player player1 = mock(Player.class, "player1");
     private Player player2 = mock(Player.class, "player2");
@@ -37,8 +38,10 @@ public class TestGameLogic {
 
     private GameOverVerifier gameOverVerifier = mock(GameOverVerifier.class, "gameOverVerifier");
 
+
     // Capture:
     private ArgumentCaptor<ILogicCallback> callback = forClass(ILogicCallback.class);
+
 
 
     @Before
@@ -58,16 +61,9 @@ public class TestGameLogic {
     }
 
 
-    @Test(expected = NullPointerException.class)
-    public void new_withNullPlayerLogic1_throwsException() {
-        new GameLogic(gameBoard, null, playerLogic2);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void new_withNullPlayerLogic2_throwsException() {
-        new GameLogic(gameBoard, playerLogic1, null);
-    }
-
+    /**
+     * Checks if an exception is thrown if the game board is null.
+     */
     @Test(expected = NullPointerException.class)
     public void new_withNullGameBoard_throwsException() {
         when(playerLogic1.getPlayer()).thenReturn(player1);
@@ -75,6 +71,25 @@ public class TestGameLogic {
         new GameLogic(null, playerLogic1, playerLogic2);
     }
 
+    /**
+     * Checks if an exception is thrown if player logic 1 is null.
+     */
+    @Test(expected = NullPointerException.class)
+    public void new_withNullPlayerLogic1_throwsException() {
+        new GameLogic(gameBoard, null, playerLogic2);
+    }
+
+    /**
+     * Checks if an exception is thrown if player logic 2 is null.
+     */
+    @Test(expected = NullPointerException.class)
+    public void new_withNullPlayerLogic2_throwsException() {
+        new GameLogic(gameBoard, playerLogic1, null);
+    }
+
+    /**
+     * Checks if an exception is thrown if player logic 1 and 2 share the same player.
+     */
     @Test(expected = AssertionError.class)
     public void new_withPlayerLogicHasSamePlayer_throwsException() {
         when(playerLogic1.getPlayer()).thenReturn(player1);
@@ -82,6 +97,9 @@ public class TestGameLogic {
         new GameLogic(gameBoard, playerLogic1, playerLogic2);
     }
 
+    /**
+     * Checks if an exception is thrown if player logic 1 returns null as player.
+     */
     @Test(expected = NullPointerException.class)
     public void new_withPlayerLogic1HasNullPlayer_throwsException() {
         when(playerLogic1.getPlayer()).thenReturn(null);
@@ -89,6 +107,9 @@ public class TestGameLogic {
         new GameLogic(gameBoard, playerLogic1, playerLogic2);
     }
 
+    /**
+     * Checks if an exception is thrown if player logic 2 returns null as player.
+     */
     @Test(expected = NullPointerException.class)
     public void new_withPlayerLogic2HasNullPlayer_throwsException() {
         when(playerLogic1.getPlayer()).thenReturn(player1);
@@ -96,6 +117,10 @@ public class TestGameLogic {
         new GameLogic(gameBoard, playerLogic1, playerLogic2);
     }
 
+    /**
+     * Checks if an exception is thrown if player logic 1 has a player which is unknown at the
+     * game board.
+     */
     @Test(expected = AssertionError.class)
     public void new_withPlayerLogic1HasDifferentPlayerThanGameBoard_throwsException() {
         when(playerLogic1.getPlayer()).thenReturn(player1);
@@ -103,6 +128,10 @@ public class TestGameLogic {
         new GameLogic(gameBoard, playerLogic1, playerLogic2);
     }
 
+    /**
+     * Checks if an exception is thrown if player logic 2 has a player which is unknown at the
+     * game board.
+     */
     @Test(expected = AssertionError.class)
     public void new_withPlayerLogic2HasDifferentPlayerThanGameBoard_throwsException() {
         when(playerLogic2.getPlayer()).thenReturn(player2);
@@ -111,22 +140,34 @@ public class TestGameLogic {
     }
 
 
+    /**
+     * Checks if an  exception is thrown if setSquareCollector() is called with null.
+     */
     @Test(expected = NullPointerException.class)
     public void setSquareCollector_withNull_throwsException() {
         gameLogic.setSquareCollector(null);
     }
 
+    /**
+     * Checks if an exception is thrown if setGameOverVerifier() is called with null.
+     */
     @Test(expected = NullPointerException.class)
     public void setGameOverVerifier_withNull_throwsException() {
         gameLogic.setGameOverVerifier(null);
     }
 
 
+    /**
+     * Checks if an exception is thrown if startGame() is called with null as player.
+     */
     @Test(expected = NullPointerException.class)
     public void startGame_withNullPlayer_throwsException() {
         gameLogic.startGame(null);
     }
 
+    /**
+     * Checks if startGame() resets the square collector.
+     */
     @Test
     public void startGame_resetsSquareCollector() {
         gameLogic.startGame(player1);
@@ -222,6 +263,9 @@ public class TestGameLogic {
         verify(playerLogic2, times(1)).requestMove(eq(gameBoard), any(ILogicCallback.class));
     }
 
+    /**
+     * Checks if startGame() places a piece on the game board when player logic makes a move.
+     */
     @Test
     public void startGame_withPlayerLogic1MakesValidMove_placesPieceOnGameBoard() {
         gameLogic.startGame(player1);
@@ -232,8 +276,12 @@ public class TestGameLogic {
         verify(gameBoard, times(1)).placePiece(1, player1);
     }
 
+    /**
+     * Checks if startGame() doesn't place a piece on the game board if the field is not empty.
+     * In this case makeMove() from the callback must return false.
+     */
     @Test
-    public void startGame_withPlayerLogic1MakesMoveOnEmptyField_callbackReturnsFalse() {
+    public void startGame_withPlayerLogic1MakesMoveOnNotEmptyField_callbackReturnsFalse() {
         gameLogic.startGame(player1);
         verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
         when(gameBoard.isFieldEmpty(1)).thenReturn(false);
@@ -242,8 +290,11 @@ public class TestGameLogic {
         verify(gameBoard, never()).placePiece(1, player1);
     }
 
+    /**
+     * Checks if callback throws an exception if makeMove() is called with a not active player.
+     */
     @Test(expected = AssertionError.class)
-    public void startGame_withPlayerLogic1MakesInvalidMoveWithInvalidPlayer_throwsException() {
+    public void startGame_withPlayerLogic1MakesInvalidMoveWithNotActivePlayer_throwsException() {
         gameLogic.startGame(player1);
         verify(playerLogic1, times(1)).requestMove(eq(gameBoard), callback.capture());
 
