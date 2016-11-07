@@ -25,6 +25,7 @@ public class TestBotPlayerLogic {
 
     // Mocks:
     private Player player = mock(Player.class, "player");
+    private Player opponent = mock(Player.class, "opponent");
 
     private ILogicCallback logicCallback = mock(ILogicCallback.class, "logicCallback");
 
@@ -77,6 +78,55 @@ public class TestBotPlayerLogic {
         botPlayerLogic.requestMove(gameBoard, logicCallback);
 
         verify(logicCallback, never()).makeMove(3, player);
+        verify(logicCallback, times(1)).makeMove(31, player);
+    }
+
+    @Test
+    public void requestMove_withRandomize_usesRandom() {
+        botPlayerLogic.setRandomizeMoves(true);
+        when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
+        when(random.nextBoolean()).thenReturn(false);
+
+        botPlayerLogic.requestMove(gameBoard, logicCallback);
+
+        verify(logicCallback, times(1)).makeMove(3, player);
+    }
+
+    @Test
+    public void requestMove_withoutRandomize_doesntUseRandom() {
+        botPlayerLogic.setRandomizeMoves(false);
+        when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
+
+        botPlayerLogic.requestMove(gameBoard, logicCallback);
+
+        verify(random, never()).nextBoolean();
+        verify(logicCallback, times(1)).makeMove(3, player);
+    }
+
+    @Test
+    public void requestMove_withRandomize_makeAnotherMove() {
+        botPlayerLogic.setRandomizeMoves(true);
+        when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
+        when(random.nextBoolean()).thenReturn(true);
+
+        botPlayerLogic.requestMove(gameBoard, logicCallback);
+
+        verify(random, atLeast(1)).nextBoolean();
+        verify(logicCallback, times(1)).makeMove(60, player);
+    }
+
+    @Test
+    public void requestMove_withOpponentPieces_makesMove() {
+        when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
+        when(gameBoard.isFieldEmpty(0)).thenReturn(false);
+        when(gameBoard.getPiece(0)).thenReturn(opponent);
+        when(gameBoard.isFieldEmpty(1)).thenReturn(false);
+        when(gameBoard.getPiece(1)).thenReturn(opponent);
+        when(gameBoard.isFieldEmpty(8)).thenReturn(false);
+        when(gameBoard.getPiece(8)).thenReturn(opponent);
+
+        botPlayerLogic.requestMove(gameBoard, logicCallback);
+
         verify(logicCallback, times(1)).makeMove(31, player);
     }
 
