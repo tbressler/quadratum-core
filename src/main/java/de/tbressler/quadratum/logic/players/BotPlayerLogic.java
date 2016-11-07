@@ -99,9 +99,9 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
                 // Calculate possible score of square:
                 scoreForSquare = score(i, j, possible[0], possible[1]);
                 // ... add chance for opponent to get this square:
-                playerScore = scoreForSquare * numberOfPlayerPieces;
+                playerScore = scoreForSquare * (numberOfPlayerPieces+1);
                 // ... add chance for player to get this square:
-                opponentScore = scoreForSquare * numberOfOpponentPieces;
+                opponentScore = scoreForSquare * (numberOfOpponentPieces+1);
 
                 if ((numberOfOpponentPieces > 0) && (numberOfPlayerPieces == 0)) {
                    // ... square is not occupied by opponent and not yet blocked by player.

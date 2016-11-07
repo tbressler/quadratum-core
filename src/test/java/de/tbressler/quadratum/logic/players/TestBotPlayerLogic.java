@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import java.util.Random;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for class BotPlayerLogic.
@@ -36,6 +37,7 @@ public class TestBotPlayerLogic {
     @Before
     public void setUp() {
         botPlayerLogic = new BotPlayerLogic(player);
+        botPlayerLogic.setRandomizeMoves(false);
         botPlayerLogic.setRandom(random);
     }
 
@@ -57,6 +59,25 @@ public class TestBotPlayerLogic {
     @Test(expected = NullPointerException.class)
     public void requestMove_withNullLogicCallback_throwsException() {
         botPlayerLogic.requestMove(gameBoard, null);
+    }
+
+    @Test
+    public void requestMove_withEmptyBoard_callsMakeMove() {
+        when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
+        botPlayerLogic.requestMove(gameBoard, logicCallback);
+        verify(logicCallback, times(1)).makeMove(3, player);
+    }
+
+    @Test
+    public void requestMove_withFieldIndex3IsOccupied_callsMakeMove() {
+        when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
+        when(gameBoard.isFieldEmpty(3)).thenReturn(false);
+        when(gameBoard.getPiece(3)).thenReturn(player);
+
+        botPlayerLogic.requestMove(gameBoard, logicCallback);
+
+        verify(logicCallback, never()).makeMove(3, player);
+        verify(logicCallback, times(1)).makeMove(31, player);
     }
 
 }
