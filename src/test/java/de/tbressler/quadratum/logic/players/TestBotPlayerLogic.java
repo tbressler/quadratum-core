@@ -120,14 +120,14 @@ public class TestBotPlayerLogic {
         when(gameBoard.isFieldEmpty(anyInt())).thenReturn(true);
         when(gameBoard.isFieldEmpty(0)).thenReturn(false);
         when(gameBoard.getPiece(0)).thenReturn(opponent);
-        when(gameBoard.isFieldEmpty(1)).thenReturn(false);
-        when(gameBoard.getPiece(1)).thenReturn(opponent);
-        when(gameBoard.isFieldEmpty(8)).thenReturn(false);
-        when(gameBoard.getPiece(8)).thenReturn(opponent);
+        when(gameBoard.isFieldEmpty(7)).thenReturn(false);
+        when(gameBoard.getPiece(7)).thenReturn(opponent);
+        when(gameBoard.isFieldEmpty(63)).thenReturn(false);
+        when(gameBoard.getPiece(63)).thenReturn(opponent);
 
         botPlayerLogic.requestMove(gameBoard, logicCallback);
 
-        verify(logicCallback, times(1)).makeMove(31, player);
+        verify(logicCallback, times(1)).makeMove(11, player);
     }
 
 }
