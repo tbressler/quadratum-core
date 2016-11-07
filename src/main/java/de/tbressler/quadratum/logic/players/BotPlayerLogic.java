@@ -24,7 +24,9 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
      * Bot strategy.
      */
     enum Strategy {
+        /** Finds best index by adding all square scores to heat map. */
         LONG_TERM,
+        /** Finds best index by using best square score for heat map. */
         SHORT_TERM
     }
 
@@ -162,7 +164,7 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
 
             // Check if chance is higher:
             if ((value > maxValue) ||
-                    ((value == maxValue) && randomizeMoves && random.nextBoolean())) {
+                    ((value == maxValue) && doRandomization())) {
                 maxValue = value;
                 indexWithMaxValue = i;
             }
@@ -188,6 +190,11 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
             default:
                 throw new IllegalStateException("Unknown strategy!");
         }
+    }
+
+    /* Returns true, if the values should be randomized. */
+    private boolean doRandomization() {
+        return randomizeMoves && random.nextBoolean();
     }
 
 
