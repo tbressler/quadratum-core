@@ -20,8 +20,19 @@ import static java.util.Objects.requireNonNull;
  */
 public class BotPlayerLogic extends AbstractPlayerLogic {
 
+    /**
+     * Bot strategy.
+     */
+    enum Strategy {
+        LONG_TERM,
+        SHORT_TERM
+    }
+
+    /* The strategy. */
+    private final Strategy strategy;
+
     /* True if moves should be randomized. */
-    private boolean randomizeMoves = false;
+    private boolean randomizeMoves = true;
 
     /* Random number generator. */
     private Random random = new Random();
@@ -31,9 +42,11 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
      * Creates the bot player logic.
      *
      * @param player The player, must not be null.
+     * @param strategy The strategy, must not be null.
      */
-    public BotPlayerLogic(Player player) {
+    public BotPlayerLogic(Player player, Strategy strategy) {
         super(player);
+        this.strategy = requireNonNull(strategy);
     }
 
 
@@ -98,23 +111,31 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
 
                 // Calculate possible score of square:
                 scoreForSquare = score(i, j, possible[0], possible[1]);
-                // ... add chance for opponent to get this square:
-                playerScore = scoreForSquare * (numberOfPlayerPieces+1);
-                // ... add chance for player to get this square:
-                opponentScore = scoreForSquare * (numberOfOpponentPieces+1);
 
                 if ((numberOfOpponentPieces > 0) && (numberOfPlayerPieces == 0)) {
-                   // ... square is not occupied by opponent and not yet blocked by player.
-                   opponentHeatMap[i] += opponentScore;
-                   opponentHeatMap[j] += opponentScore;
-                   opponentHeatMap[possible[0]] += opponentScore;
-                   opponentHeatMap[possible[1]] += opponentScore;
+                    // ... square is not occupied by opponent and not yet blocked by player.
+
+                    // Calculate chance for opponent to get this square.
+                    opponentScore = scoreForSquare * (numberOfOpponentPieces+1);
+
+                    // Update opponent heat map:
+                    updateHeatMap(opponentHeatMap, i, opponentScore);
+                    updateHeatMap(opponentHeatMap, j, opponentScore);
+                    updateHeatMap(opponentHeatMap, possible[0], opponentScore);
+                    updateHeatMap(opponentHeatMap, possible[1], opponentScore);
+
                 } else if (numberOfOpponentPieces == 0) {
-                   // ... square is not blocked by opponent.
-                   playerHeatMap[i] += playerScore;
-                   playerHeatMap[j] += playerScore;
-                   playerHeatMap[possible[0]] += playerScore;
-                   playerHeatMap[possible[1]] += playerScore;
+                    // ... square is not blocked by opponent.
+
+                    // Calculate chance for player to get this square.
+                    playerScore = scoreForSquare * (numberOfPlayerPieces+1);
+
+                    // Update player heat map:
+                    updateHeatMap(playerHeatMap, i, playerScore);
+                    updateHeatMap(playerHeatMap, j, playerScore);
+                    updateHeatMap(playerHeatMap, possible[0], playerScore);
+                    updateHeatMap(playerHeatMap, possible[1], playerScore);
+
                 }
             }
         }
@@ -152,10 +173,28 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
         callback.makeMove(indexWithMaxValue, getPlayer());
     }
 
+    /* Updates the heat map at the given index with the score. */
+    private void updateHeatMap(int[] heatMap, int index, int score) {
+        heatMap[index] = calculateNewScore(heatMap[index], score);
+    }
+
+    /* Calculates the new score for the heat map.*/
+    private int calculateNewScore(int heatMapValue, int currentScore) {
+        switch (strategy) {
+            case LONG_TERM:
+                return heatMapValue + currentScore;
+            case SHORT_TERM:
+                return (currentScore > heatMapValue) ? currentScore : heatMapValue;
+            default:
+                throw new IllegalStateException("Unknown strategy!");
+        }
+    }
+
 
     @Override
     public String toString() {
         return toStringHelper(this)
+                .add("strategy", strategy)
                 .add("randomizeMoves", randomizeMoves)
                 .toString();
     }

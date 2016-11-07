@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.Random;
 
+import static de.tbressler.quadratum.logic.players.BotPlayerLogic.Strategy.LONG_TERM;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +38,7 @@ public class TestBotPlayerLogic {
 
     @Before
     public void setUp() {
-        botPlayerLogic = new BotPlayerLogic(player);
+        botPlayerLogic = new BotPlayerLogic(player, LONG_TERM);
         botPlayerLogic.setRandomizeMoves(false);
         botPlayerLogic.setRandom(random);
     }
@@ -48,7 +49,15 @@ public class TestBotPlayerLogic {
      */
     @Test(expected = NullPointerException.class)
     public void new_withNullPlayer_throwsException() {
-        new BotPlayerLogic(null);
+        new BotPlayerLogic(null, LONG_TERM);
+    }
+
+    /**
+     * Checks if an exception is thrown if the strategy is null.
+     */
+    @Test(expected = NullPointerException.class)
+    public void new_withNullStrategy_throwsException() {
+        new BotPlayerLogic(player, null);
     }
 
 
