@@ -83,10 +83,7 @@ public class SquareUtils {
                 (piece4[0] < 0) || (piece4[0] > 7) || (piece4[1] < 0) || (piece4[1] > 7)) return EMPTY_ARRAY;
 
         // Calculate index of possible pieces:
-        int index3 = toIndex(piece3[0], piece3[1]);
-        int index4 = toIndex(piece4[0], piece4[1]);
-
-        return new int[]{index3, index4};
+        return new int[]{toIndex(piece3[0], piece3[1]), toIndex(piece4[0], piece4[1])};
     }
 
 
