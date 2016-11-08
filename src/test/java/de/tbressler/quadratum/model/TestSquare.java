@@ -83,37 +83,37 @@ public class TestSquare {
     @Test
     public void getScore_withObliqueSquare_returns9() {
         Square square = new Square(new int[]{9, 19, 24, 34}, player);
-        assertEquals(9, square.getScore());
+        assertEquals(16, square.getScore());
     }
 
     @Test
     public void getScore_withNormalSquare_returns9() {
         Square square = new Square(new int[]{36, 39, 60, 63}, player);
-        assertEquals(9, square.getScore());
+        assertEquals(16, square.getScore());
     }
 
     @Test
     public void getScore_withSmallestSquare_returns1() {
         Square square = new Square(new int[]{0, 1, 8, 9}, player);
-        assertEquals(1, square.getScore());
+        assertEquals(4, square.getScore());
     }
 
     @Test
     public void getScore_withBiggestSquare_returns49() {
         Square square = new Square(new int[]{0, 7, 56, 63}, player);
-        assertEquals(49, square.getScore());
+        assertEquals(64, square.getScore());
     }
 
     @Test
     public void getScore_withBiggestObliqueSquare_returns49() {
         Square square = new Square(new int[]{1, 15, 48, 62}, player);
-        assertEquals(49, square.getScore());
+        assertEquals(64, square.getScore());
     }
 
     @Test
     public void getScore_withSmallestObliqueSquare_returns4() {
         Square square = new Square(new int[]{1, 8, 10, 17}, player);
-        assertEquals(4, square.getScore());
+        assertEquals(9, square.getScore());
     }
 
 

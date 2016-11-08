@@ -206,7 +206,7 @@ public class TestSquareCollector {
         when(gameBoard.getPiece(63)).thenReturn(player1);
         squareCollector.detect(gameBoard, player1);
 
-        assertEquals(9, squareCollector.getScoreForPlayer(player1));
+        assertEquals(16, squareCollector.getScoreForPlayer(player1));
     }
 
     @Test
@@ -221,7 +221,7 @@ public class TestSquareCollector {
         when(gameBoard.getPiece(9)).thenReturn(player1);
         squareCollector.detect(gameBoard, player1);
 
-        assertEquals(10, squareCollector.getScoreForPlayer(player1));
+        assertEquals(20, squareCollector.getScoreForPlayer(player1));
     }
 
     @Test
