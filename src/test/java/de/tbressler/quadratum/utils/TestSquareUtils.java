@@ -117,4 +117,9 @@ public class TestSquareUtils {
         assertEquals(49, score(new int[] {8, 14, 56, 62}));
     }
 
+    @Test
+    public void score_withBigDifferentObliqueSquare8x8_returns64() {
+        assertEquals(64, score(new int[] {6, 8, 55, 57}));
+    }
+
 }

@@ -1,7 +1,8 @@
 package de.tbressler.quadratum.utils;
 
 import static de.tbressler.quadratum.utils.GameBoardUtils.*;
-import static java.lang.Math.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static java.util.Arrays.sort;
 
 /**
@@ -93,7 +94,7 @@ public class SquareUtils {
      * Returns the score for the given square.
      *
      * @param pieces The array with the 4 indexes of the edges of the square.
-     * @return The score for the square, between 1..49.
+     * @return The score for the square, between 1..64.
      */
     public static int score(int[] pieces) {
         return score(pieces[0], pieces[1], pieces[2], pieces[3]);
@@ -106,15 +107,12 @@ public class SquareUtils {
      * @param index2 The second index, between 0..63.
      * @param index3 The third index, between 0..63.
      * @param index4 The fourth index, between 0..63.
-     * @return The score for the square, between 1..49.
+     * @return The score for the square, between 1..64.
      */
     public static int score(int index1, int index2, int index3, int index4) {
-
         int minIndex = min(min(index1, index2), min(index3, index4));
         int maxIndex = max(max(index1, index2), max(index3, index4));
-
-        int dx = abs(difY(minIndex, maxIndex)) + 1;
-
+        int dx = difY(minIndex, maxIndex) + 1;
         return dx * dx;
     }
 
