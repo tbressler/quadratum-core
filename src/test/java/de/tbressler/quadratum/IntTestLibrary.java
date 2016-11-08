@@ -2,12 +2,22 @@ package de.tbressler.quadratum;
 
 import de.tbressler.quadratum.logic.GameLogic;
 import de.tbressler.quadratum.logic.IGameLogicListener;
+import de.tbressler.quadratum.logic.ILogicCallback;
 import de.tbressler.quadratum.logic.players.HumanPlayerLogic;
 import de.tbressler.quadratum.model.GameBoard;
 import de.tbressler.quadratum.model.IGameBoardListener;
 import de.tbressler.quadratum.model.Player;
+import de.tbressler.quadratum.model.Square;
+import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 
 /**
@@ -22,12 +32,15 @@ public class IntTestLibrary {
     private IGameBoardListener boardListener = mock(IGameBoardListener.class, "boardListener");
     private IGameLogicListener logicListener = mock(IGameLogicListener.class, "logicListener");
 
+    // Capture:
+    private ArgumentCaptor<Set> square = ArgumentCaptor.forClass(Set.class);
+
 
     @Test
     public void integrationTest_withTwoHumanPlayers() {
 
-        int[] movesOfPlayer1 = new int[] {00, 05, 10};
-        int[] movesOfPlayer2 = new int[] {01, 02, 03};
+        int[] movesOfPlayer1 = new int[] { 1, 15, 48, 62, 10, 12, 14, 26, 30, 28};
+        int[] movesOfPlayer2 = new int[] {34, 59, 54, 29, 36, 38, 52, 18, 20, 36};
 
         Player player1 = new Player("player1");
         Player player2 = new Player("player2");
@@ -59,7 +72,23 @@ public class IntTestLibrary {
             verify(boardListener, times(1)).onPiecePlaced(movesOfPlayer2[i], player2);
         }
 
-        // TODO Verify square outcome!
+        verify(logicListener, times(2)).onNewSquaresFound(eq(player1), square.capture());
+        verify(logicListener, times(3)).onNewSquaresFound(eq(player2), square.capture());
+
+        Set foundSquares = new HashSet();
+        for (Set squareSet : square.getAllValues())
+            foundSquares.addAll(squareSet);
+
+        assertEquals(7, foundSquares.size());
+
+        assertTrue(foundSquares.contains(new Square(new int[] { 1, 15, 48, 62}, player1)));
+        assertTrue(foundSquares.contains(new Square(new int[] {10, 12, 26, 28}, player1)));
+        assertTrue(foundSquares.contains(new Square(new int[] {12, 14, 28, 30}, player1)));
+
+        assertTrue(foundSquares.contains(new Square(new int[] {29, 34, 54, 59}, player2)));
+        assertTrue(foundSquares.contains(new Square(new int[] {36, 38, 52, 54}, player2)));
+        assertTrue(foundSquares.contains(new Square(new int[] {18, 20, 34, 36}, player2)));
+        assertTrue(foundSquares.contains(new Square(new int[] {20, 34, 38, 52}, player2)));
     }
 
 }
