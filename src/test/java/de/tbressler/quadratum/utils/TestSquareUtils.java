@@ -93,33 +93,28 @@ public class TestSquareUtils {
     }
 
     @Test
-    public void score_withObliqueSquare_returns9() {
-        assertEquals(9, score(new int[]{9, 19, 24, 34}));
+    public void score_withBigObliqueSquare8x8_returns64() {
+        assertEquals(64, score(new int[] {1, 15, 48, 62}));
     }
 
     @Test
-    public void score_withSquare_returns9() {
-        assertEquals(9, score(new int[]{36, 39, 60, 63}));
+    public void score_withMediumSquare4x4_returns16() {
+        assertEquals(16, score(new int[] {1, 4, 25, 28}));
     }
 
     @Test
-    public void score_withSmallestSquare_returns1() {
-        assertEquals(1, score(new int[]{0, 1, 8, 9}));
+    public void score_withMediumObliqueSquare5x5_returns25() {
+        assertEquals(25, score(new int[] {27, 32, 52, 57}));
     }
 
     @Test
-    public void score_withBiggestSquare_returns49() {
-        assertEquals(49, score(new int[]{0, 7, 56, 63}));
+    public void score_withBigSquare6x6_returns36() {
+        assertEquals(36, score(new int[] {16, 21, 56, 61}));
     }
 
     @Test
-    public void score_withBiggestObliqueSquare_returns49() {
-        assertEquals(49, score(new int[]{1, 15, 48, 62}));
-    }
-
-    @Test
-    public void score_withSmallestObliqueSquare_returns4() {
-        assertEquals(4, score(new int[]{1, 8, 10, 17}));
+    public void score_withBigSquare7x7_returns49() {
+        assertEquals(49, score(new int[] {8, 14, 56, 62}));
     }
 
 }

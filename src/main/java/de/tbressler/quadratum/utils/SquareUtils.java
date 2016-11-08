@@ -113,11 +113,9 @@ public class SquareUtils {
         int minIndex = min(min(index1, index2), min(index3, index4));
         int maxIndex = max(max(index1, index2), max(index3, index4));
 
-        int dx = abs(difX(minIndex, maxIndex));
-        int dy = abs(difY(minIndex, maxIndex));
-        int value = max(dx, dy);
+        int dx = abs(difY(minIndex, maxIndex)) + 1;
 
-        return value * value;
+        return dx * dx;
     }
 
 }
