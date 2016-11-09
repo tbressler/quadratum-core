@@ -25,10 +25,10 @@ TBD!
 
 ## Write your own bot logic
 
-If you want to write your own bot logic, you can implement the interface IPlayerLogic.
+If you want to write your own bot logic, you can implement the interface `IPlayerLogic`.
 
 ```
 TBD!
 ```
 
-If you want to learn how to do that, take a look at class BotPlayerLogic.
+If you want to learn how to do that, take a look at the class `BotPlayerLogic`.
