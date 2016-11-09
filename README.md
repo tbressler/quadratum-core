@@ -19,4 +19,16 @@ In order to win the game you must satisfy the following conditions:
 
 The usage of the library is very simple. Start with the following example:
 
+```
 TBD!
+```
+
+## Write your own bot logic
+
+If you want to write your own bot logic, you can implement the interface IPlayerLogic.
+
+```
+TBD!
+```
+
+If you want to learn how to do that, take a look at class BotPlayerLogic.
