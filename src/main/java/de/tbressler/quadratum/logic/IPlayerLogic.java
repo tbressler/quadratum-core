@@ -4,7 +4,7 @@ import de.tbressler.quadratum.model.IReadOnlyGameBoard;
 import de.tbressler.quadratum.model.Player;
 
 /**
- * The interface for player logic.
+ * The interface for the player logic.
  *
  * @author Tobias Bressler
  * @version 1.0

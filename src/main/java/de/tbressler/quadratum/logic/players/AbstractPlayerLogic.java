@@ -6,7 +6,7 @@ import de.tbressler.quadratum.model.Player;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Abstract implementation of the player logic interface.
+ * An abstract implementation for the player logic interface.
  *
  * @author Tobias Bressler
  * @version 1.0

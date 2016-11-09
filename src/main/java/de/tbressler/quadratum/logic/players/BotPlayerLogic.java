@@ -13,16 +13,14 @@ import static de.tbressler.quadratum.utils.SquareUtils.score;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The player logic for a AI players (bots).
+ * The implementation of the player logic interface for artificial intelligence players (bots).
  *
  * @author Tobias Bressler
  * @version 1.0
  */
 public class BotPlayerLogic extends AbstractPlayerLogic {
 
-    /**
-     * Bot strategy.
-     */
+    /** Enum for different bot strategies. */
     enum Strategy {
         /** Finds best index by adding all square scores to heat map. */
         LONG_TERM,
@@ -30,10 +28,11 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
         SHORT_TERM
     }
 
-    /* The strategy. */
+
+    /* The strategy that should be used by the bot. */
     private final Strategy strategy;
 
-    /* True if moves should be randomized. */
+    /* True if the moves of the player should be randomized. */
     private boolean randomizeMoves = true;
 
     /* Random number generator. */
@@ -53,7 +52,8 @@ public class BotPlayerLogic extends AbstractPlayerLogic {
 
 
     /**
-     * Enables or disables randomization of moves.
+     * Enables or disables randomization of moves. If randomization is enabled, the bot makes a random
+     * decision which field he uses for his next move if the chance for a good score is the same.
      *
      * @param randomizeMoves True if moves should be randomized.
      */

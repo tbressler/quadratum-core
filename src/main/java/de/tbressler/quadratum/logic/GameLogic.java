@@ -272,6 +272,27 @@ public class GameLogic {
 
 
     /**
+     * Returns the current score of the given player.
+     *
+     * @param player The player, must not be null.
+     * @return The score of the given player.
+     */
+    public int getScore(Player player) {
+        return squareCollector.getScore(requireNonNull(player));
+    }
+
+    /**
+     * Returns the current number of squares for the given player.
+     *
+     * @param player The player, must not be null.
+     * @return The current number of squares for the given player.
+     */
+    public int getSquareCount(Player player) {
+        return squareCollector.getSquareCount(requireNonNull(player));
+    }
+
+
+    /**
      * Adds a listener to the game logic.
      *
      * @param listener the listener, must not be null.

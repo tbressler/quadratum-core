@@ -10,7 +10,8 @@ import static de.tbressler.quadratum.utils.GameBoardUtils.assertIndex;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The player logic for a human player.
+ * The player logic for a human player. This logic can be used by the user interface of the
+ * application, which accepts the user input.
  *
  * @author Tobias Bressler
  * @version 1.0
@@ -21,7 +22,7 @@ public class HumanPlayerLogic extends AbstractPlayerLogic {
     private boolean isPlayerActive = false;
 
     /* Lock. */
-    private ReentrantLock lock = new ReentrantLock(true);
+    private final ReentrantLock lock = new ReentrantLock(true);
 
     /* The logic callback. */
     private ILogicCallback logicCallback = null;
@@ -69,7 +70,6 @@ public class HumanPlayerLogic extends AbstractPlayerLogic {
      */
     public boolean placePiece(int index) {
         assertIndex(index, "Index must be between 0 and 63!");
-
         try {
             lock.lock();
 

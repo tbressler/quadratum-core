@@ -98,7 +98,7 @@ public class SquareCollector {
      * @param player The player, must not be null.
      * @return The current number of squares
      */
-    public int getSquareCountForPlayer(Player player) {
+    public int getSquareCount(Player player) {
         requireNonNull(player);
         int count = 0;
         for (Square square : squares)
@@ -114,7 +114,7 @@ public class SquareCollector {
      * @param player The player, must not be null.
      * @return The current score of the player
      */
-    public int getScoreForPlayer(Player player) {
+    public int getScore(Player player) {
         requireNonNull(player);
         int score = 0;
         for (Square square : squares)

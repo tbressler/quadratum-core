@@ -71,8 +71,8 @@ public class GameOverVerifier {
         requireNonNull(gameBoard);
         requireNonNull(squareCollector);
 
-        int scorePlayer1 = squareCollector.getScoreForPlayer(gameBoard.getPlayer1());
-        int scorePlayer2 = squareCollector.getScoreForPlayer(gameBoard.getPlayer2());
+        int scorePlayer1 = squareCollector.getScore(gameBoard.getPlayer1());
+        int scorePlayer2 = squareCollector.getScore(gameBoard.getPlayer2());
 
         // Check if one player has won the game:
         if ((scorePlayer1 >= minScore) || (scorePlayer2 >= minScore)) {

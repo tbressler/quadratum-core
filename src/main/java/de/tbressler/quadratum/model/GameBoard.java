@@ -9,7 +9,7 @@ import static de.tbressler.quadratum.utils.GameBoardUtils.assertIndex;
 import static java.util.Objects.requireNonNull;
 
 /**
- * A game board.
+ * A game board (without any game logic).
  *
  * @author Tobias Bressler
  * @version 1.0

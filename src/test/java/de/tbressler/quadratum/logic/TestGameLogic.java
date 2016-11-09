@@ -546,6 +546,44 @@ public class TestGameLogic {
 
 
     /**
+     * Checks if getScore() returns the score count from the square collector for player 1.
+     */
+    @Test
+    public void getScore_withPlayer1_returnsScoreFromSquareCollector() {
+        when(squareCollector.getScore(player1)).thenReturn(100);
+        assertEquals(100, gameLogic.getScore(player1));
+    }
+
+    /**
+     * Checks if getScore() returns the score count from the square collector for player 2.
+     */
+    @Test
+    public void getScore_withPlayer2_returnsScoreFromSquareCollector() {
+        when(squareCollector.getScore(player2)).thenReturn(150);
+        assertEquals(150, gameLogic.getScore(player2));
+    }
+
+
+    /**
+     * Checks if getSquareCount() returns the number of squares from the square collector for player 1.
+     */
+    @Test
+    public void getSquareCount_withPlayer1_returnsScoreFromSquareCollector() {
+        when(squareCollector.getSquareCount(player1)).thenReturn(10);
+        assertEquals(10, gameLogic.getSquareCount(player1));
+    }
+
+    /**
+     * Checks if getSquareCount() returns the number of squares from the square collector for player 2.
+     */
+    @Test
+    public void getSquareCount_withPlayer2_returnsScoreFromSquareCollector() {
+        when(squareCollector.getSquareCount(player2)).thenReturn(15);
+        assertEquals(15, gameLogic.getSquareCount(player2));
+    }
+
+
+    /**
      * Checks if an exception is thrown if listener is null.
      */
     @Test(expected = NullPointerException.class)
