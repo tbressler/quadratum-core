@@ -19,16 +19,44 @@ In order to win the game you must satisfy the following conditions:
 
 The usage of the library is very simple. Start with the following example:
 
-```
-TBD!
+```Java
+// Initialize the game:
+
+Player player1 = new Player("player1");
+Player player2 = new Player("player2");
+
+GameBoard gameBoard = new GameBoard(player1, player2);
+gameBoard.addGameBoardListener(boardListener);
+
+HumanPlayerLogic playerLogic1 = new HumanPlayerLogic(player1);
+HumanPlayerLogic playerLogic2 = new HumanPlayerLogic(player2);
+
+GameLogic gameLogic = new GameLogic(gameBoard, playerLogic1, playerLogic2);
+gameLogic.addGameLogicListener(logicListener);
+
+// Start the game:
+
+gameLogic.startGame(player1);
+
+// Play the game:
+
+playerLogic1.placePiece(1);
+
+playerLogic2.placePiece(40);
 ```
 
 ## Write your own bot logic
 
 If you want to write your own bot logic, you can implement the interface `IPlayerLogic`.
 
-```
-TBD!
+```Java
+public interface IPlayerLogic {
+
+  Player getPlayer();
+
+  void requestMove(IReadOnlyGameBoard gameBoard, ILogicCallback callback);
+
+}
 ```
 
 If you want to learn how to do that, take a look at the class `BotPlayerLogic`.
