@@ -1,14 +1,14 @@
-# Quadratom Core Library
+# Quadratum Core Library
 
-An open source library for the game "Quadratom".
+An open source library for the game "Quadratum".
 
 The library currently includes:
 - game logic
 - bot logic
 
-## What is Quadratom?
+## What is Quadratum?
 
-Quadratom is an Android game. The game takes place on a 8x8 board. The object of the game is to form squares using the arrangement of these pieces. The larger the square, the more points the player gets. 
+Quadratum is an Android game. The game takes place on a 8x8 board. The object of the game is to form squares using the arrangement of these pieces. The larger the square, the more points the player gets. 
 
 In order to win the game you must satisfy the following conditions:
 
